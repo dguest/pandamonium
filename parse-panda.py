@@ -6,34 +6,35 @@ import sys
 import re
 
 _ok_states = {'done', 'finished'}
+_headers = {'Accept': 'application/json',
+            'Content-Type':'application/json',
+            'User-Agent':'User-Agent: curl/7.43.0'}
+
+def get_broken_taskids(taskname='group.perf-flavtag*',
+                       user='Daniel Hay Guest',
+                       taskname_tag = 'v5.holistic'):
+    pars = {
+        'taskname': taskname,
+        'produsername': user,
+    }
+    url = 'http://bigpanda.cern.ch/tasks/?' + parse.urlencode(pars)
+    req = request.Request(url, headers=_headers)
+    ret_json = request.urlopen(req).read().decode('utf-8')
+    for entry in json.loads(ret_json):
+        if taskname_tag not in entry['taskname']:
+            continue
+        if entry['status'] not in _ok_states:
+            yield entry['jeditaskid']
 
 def run():
-    taskname_tag = 'v5.holistic'
-    params = parse.urlencode({
-        # 'taskname': 'user.dguest*',
-        # 'taskname': 'group.perf-flavtag*',
-        'taskid': 9147919,
-        # 'days': 5,
-        # 'produsername': 'Daniel Hay Guest',
-        # 'datasets': 'yes'
-    })
-    print(params)
-    # return 0
-    url = 'http://bigpanda.cern.ch/tasks/?' + params
-    headers = {'Accept': 'application/json',
-               'Content-Type':'application/json',
-               'User-Agent':'User-Agent: curl/7.43.0'}
-    req = request.Request(url, headers=headers)
-    stuff = request.urlopen(req).read().decode('utf-8')
-    print(json.dumps(json.loads(stuff), indent=2))
-    for entry in json.loads(stuff):
-        # if entry['status'] in _ok_states:
-        #     continue
-        # if taskname_tag not in entry['taskname']:
-        #     continue
-        print(entry)
-        for ds in entry['datasets']:
-            print(ds['datasetname'])
+    for taskid in get_broken_taskids():
+        params = parse.urlencode({'jeditaskid': taskid})
+        url = 'http://bigpanda.cern.ch/tasks/?' + params
+        req = request.Request(url, headers=_headers)
+        stuff = request.urlopen(req).read().decode('utf-8')
+        for entry in json.loads(stuff):
+            for ds in entry['datasets']:
+                print(ds['datasetname'])
 
 
 
