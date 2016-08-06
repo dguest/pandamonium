@@ -16,7 +16,7 @@ import sys
 import re
 import argparse
 
-_ok_states = {'done', 'finished'}
+_broken_states = {'aborted', 'broken'}
 _headers = {'Accept': 'application/json',
             'Content-Type':'application/json',
             'User-Agent':'User-Agent: curl/7.43.0'}
@@ -38,7 +38,7 @@ def get_broken_taskids(taskname, user):
     req = request.Request(url, headers=_headers)
     ret_json = request.urlopen(req).read().decode('utf-8')
     for entry in json.loads(ret_json):
-        if entry['status'] not in _ok_states:
+        if entry['status'] in _broken_states:
             yield entry['jeditaskid']
 
 def get_input_ds(taskid):
