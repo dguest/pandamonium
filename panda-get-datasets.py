@@ -33,8 +33,8 @@ _headers = {'Accept': 'application/json',
 def get_args():
     d = ' (default: %(default)s)'
     c = ' (default: %(const)s)'
-    user=os.environ.get(_def_user, None)
-    if user is None:
+    user=os.environ.get(_def_user, '')
+    if not user:
         de = ' (please set {} environment variable)'.format(_def_user)
     else:
         de = d
