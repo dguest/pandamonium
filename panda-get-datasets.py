@@ -4,22 +4,25 @@
 
 With a specified search string, will search for datasets with that
 name. If the name doesn't end in `*` or `/`, append a wildcard.
-
 Without a specified search string, the datasets can be piped.
+
+The user name can be specified via environment variable to reduce
+clutter.
+
 """
 # help strings
 _h_taskname='initial search string'
-_h_user='full user name (as listed on panda)'
+_h_user='full user name, or blank for all'
 _h_stream='stream name fragment to filter for'
 _h_days='only look back this many days'
 _h_state='prefix dataset name with state'
 # defaults
-_def_user='Daniel Hay Guest'
+_def_user='GRID_USER_NAME'
 _def_stream='OUT'
 
 from urllib import request, parse
 import json
-import sys
+import sys, os
 import re
 import argparse
 
@@ -29,14 +32,21 @@ _headers = {'Accept': 'application/json',
 
 def get_args():
     d = ' (default: %(default)s)'
-    parser = argparse.ArgumentParser(description=__doc__)
+    c = ' (default: %(const)s)'
+    user=os.environ.get(_def_user, None)
+    if user is None:
+        de = ' (please set {} environment variable)'.format(_def_user)
+    else:
+        de = d
+    parser = argparse.ArgumentParser(
+        description=__doc__,
+        formatter_class=argparse.RawDescriptionHelpFormatter)
     parser.add_argument('taskname', help=_h_taskname, nargs='?')
-    parser.add_argument('-u','--user', help=_h_user + d, default=_def_user)
+    parser.add_argument('-u','--user', help=_h_user + de, default=user)
     parser.add_argument('-d','--days', help=_h_days, type=int)
     addinfo = parser.add_mutually_exclusive_group()
-    addinfo.add_argument('-a', '--status', action='store_true', help=_h_state)
-    addinfo.add_argument('-s','--stream', help=_h_stream + d,
-                         default=_def_stream)
+    addinfo.add_argument('-s','--stream', help=_h_stream + c, nargs='?',
+                         default=None, const=_def_stream)
     args = parser.parse_args()
     if not args.taskname and sys.stdin.isatty():
         parser.print_usage()
@@ -46,7 +56,7 @@ def get_args():
 def get_datasets(taskname, user, days=None):
     pars = {
         'taskname': taskname,
-        'produsername': user,
+        'username': user,
     }
     if days is not None:
         pars['days'] = days
@@ -120,11 +130,12 @@ def run():
 
     # loop over tasks
     for task in datasets:
-        if args.status:
-            sys.stdout.write(getstatus(task) + '\n')
-        else:
+        if args.stream:
             for ds in get_ds(task['jeditaskid'], args.stream):
                 sys.stdout.write(ds + '\n')
+        else:
+            sys.stdout.write(getstatus(task) + '\n')
+
 
 if __name__ == '__main__':
     run()
