@@ -1,7 +1,11 @@
 #!/usr/bin/env python3
 
-"""
-Script to retreve datasets (input or output) in submitted jobs
+"""Script to retreve datasets (input or output) in submitted jobs
+
+With a specified search string, will search for datasets with that
+name. If the name doesn't end in `*` or `/`, append a wildcard.
+
+Without a specified search string, the datasets can be piped.
 """
 # help strings
 _h_taskname='initial search string'
@@ -26,14 +30,18 @@ _headers = {'Accept': 'application/json',
 def get_args():
     d = ' (default: %(default)s)'
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('taskname', help=_h_taskname)
+    parser.add_argument('taskname', help=_h_taskname, nargs='?')
     parser.add_argument('-u','--user', help=_h_user + d, default=_def_user)
     parser.add_argument('-d','--days', help=_h_days, type=int)
     addinfo = parser.add_mutually_exclusive_group()
     addinfo.add_argument('-a', '--status', action='store_true', help=_h_state)
     addinfo.add_argument('-s','--stream', help=_h_stream + d,
                          default=_def_stream)
-    return parser.parse_args()
+    args = parser.parse_args()
+    if not args.taskname and sys.stdin.isatty():
+        parser.print_usage()
+        sys.exit('ERROR: need to pipe datasets or specify a search string')
+    return args
 
 def get_datasets(taskname, user, days=None):
     pars = {
@@ -89,11 +97,29 @@ def getstatus(task):
     if sys.stdout.isatty():
         color = _color_dic.get(task['superstatus'], ENDC)
     status_color = color + task['status'] + ENDC
-    return '{s:<20} {t:<120}'.format(s=status_color, t=task['taskname'])
+    return '{s:<20} {i:<9} {t}'.format(
+        s=status_color, t=task['taskname'], i=task['reqid'])
+
+def stdin_iter(args):
+    for line in sys.stdin:
+        yield from get_datasets(line.strip(), args.user, args.days)
 
 def run():
     args = get_args()
-    for task in get_datasets(args.taskname, args.user, args.days):
+
+    taskname = args.taskname
+    # try to search
+    if taskname is not None:
+        # append a wildcard if I forgot
+        if args.taskname[-1] not in '/*':
+            taskname = taskname + '*'
+        datasets = get_datasets(taskname, args.user, args.days)
+    else:
+        # otherwise read from stdin
+        datasets = stdin_iter(args)
+
+    # loop over tasks
+    for task in datasets:
         if args.status:
             sys.stdout.write(getstatus(task) + '\n')
         else:
