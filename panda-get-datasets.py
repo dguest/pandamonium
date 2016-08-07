@@ -85,7 +85,9 @@ _color_dic = {
     'failed': RED,
     }
 def getstatus(task):
-    color = _color_dic.get(task['superstatus'], ENDC)
+    color = ENDC
+    if sys.stdout.isatty():
+        color = _color_dic.get(task['superstatus'], ENDC)
     status_color = color + task['status'] + ENDC
     return '{s:<20} {t:<120}'.format(s=status_color, t=task['taskname'])
 
