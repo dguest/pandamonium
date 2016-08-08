@@ -79,36 +79,39 @@ def get_ds(taskid, streamfrag):
 
 
 RED = '\033[0;91m'
-RED_BLINK = '\033[5;91m'
-RED_BOLD = '\033[1;91m'
-RED_UBOLD = '\033[4;1;91m'
-GREEN = '\033[0;92m'
-YELLOW = '\033[0;93m'
-BLUE = '\033[1;94m'
-MAGENTA = '\033[0;95m'
-CYAN = '\033[0;96m'
+GREEN = '\033[92m'
+YELLOW = '\033[93m'
+BLUE = '\033[94m'
+MAGENTA = '\033[95m'
+CYAN = '\033[96m'
 ENDC = '\033[0m'
 BOLD = '\033[1m'
 UNDERLINE = '\033[4m'
+BLINK = '\033[5m'
 
 _color_dic = {
-    'running': BLUE,
+    'running': BLUE + BOLD,
     'submitting': CYAN,
     'registered': MAGENTA,
     'ready': MAGENTA,
     'done': GREEN,
     'finished': YELLOW,
-    'broken': RED_BOLD,
+    'broken': RED + BOLD,
     'aborted': RED,
     'failed': RED,
     }
 def getstatus(task):
-    color = ENDC
     if sys.stdout.isatty():
         color = _color_dic.get(task['superstatus'], ENDC)
-    status_color = color + task['status'] + ENDC
-    return '{s:<20} {i:<9} {t}'.format(
-        s=status_color, t=task['taskname'], i=task['reqid'])
+        status_color = color + task['status'] + ENDC
+        nonprlen = len(color) + len(ENDC)
+    else:
+        status_color = task['status']
+        nonprlen = 0
+
+    return '{s:<{l}} {i:<9} {t}'.format(
+        s=status_color, t=task['taskname'], i=task['reqid'],
+        l=(11 + nonprlen))
 
 def stdin_iter(args):
     for line in sys.stdin:
