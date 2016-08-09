@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+#!/usr/bin/env python
 
 """Script to retreve datasets (input or output) in submitted jobs
 
@@ -20,7 +20,8 @@ _h_state='prefix dataset name with state'
 _def_user='GRID_USER_NAME'
 _def_stream='OUT'
 
-from urllib import request, parse
+import urllib2
+import urllib
 import json
 import sys, os
 import re
@@ -60,15 +61,15 @@ def get_datasets(taskname, user, days=None):
     }
     if days is not None:
         pars['days'] = days
-    url = 'http://bigpanda.cern.ch/tasks/?' + parse.urlencode(pars)
-    req = request.Request(url, headers=_headers)
-    return json.loads(request.urlopen(req).read().decode('utf-8'))
+    url = 'http://bigpanda.cern.ch/tasks/?' + urllib.urlencode(pars)
+    req = urllib2.Request(url, headers=_headers)
+    return json.loads(urllib2.urlopen(req).read().decode('utf-8'))
 
 def get_ds(taskid, streamfrag):
-    params = parse.urlencode({'jeditaskid': taskid})
+    params = urllib.urlencode({'jeditaskid': taskid})
     url = 'http://bigpanda.cern.ch/tasks/?' + params
-    req = request.Request(url, headers=_headers)
-    stuff = request.urlopen(req).read().decode('utf-8')
+    req = urllib2.Request(url, headers=_headers)
+    stuff = urllib2.urlopen(req).read().decode('utf-8')
     # containers = set()
     for entry in json.loads(stuff):
         datasets = entry['datasets']
@@ -115,7 +116,8 @@ def getstatus(task):
 
 def stdin_iter(args):
     for line in sys.stdin:
-        yield from get_datasets(line.strip(), args.user, args.days)
+        for ds in get_datasets(line.strip(), args.user, args.days):
+            yield ds
 
 def run():
     args = get_args()
