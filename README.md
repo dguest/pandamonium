@@ -54,6 +54,7 @@ Testimonials
 ------------
 
 "I like colors" -- Chase Schimmin
+
 "I tried to use it but it's python 3" -- also Chase
 
 (I added python 2 support)
