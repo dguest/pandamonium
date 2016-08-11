@@ -1,12 +1,14 @@
 #!/usr/bin/env python
 
 """
-Pure python beauty
+Resubmit jobs with pbook
 
-Thanks ATLAS. Thatlas.
+Runs on pure python beauty.
 
 """
 _h_jobid = 'panda taskid, you can also pipe them'
+
+epi='Thanks ATLAS. Thatlas.'
 
 import sys, os
 import argparse
@@ -16,7 +18,8 @@ import argparse
 def get_args():
     parser = argparse.ArgumentParser(
         description=__doc__,
-        formatter_class=argparse.RawDescriptionHelpFormatter)
+        formatter_class=argparse.RawDescriptionHelpFormatter,
+        epilog=epi)
     parser.add_argument('taskids', type=int, nargs='*', help=_h_jobid)
     parser.add_argument('-b', '--build', action='store_true')
     parser.add_argument('-n', '--nfiles', type=int)
