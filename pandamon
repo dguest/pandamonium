@@ -116,7 +116,10 @@ def getstatus(task):
 
 def stdin_iter(args):
     for line in sys.stdin:
-        for ds in get_datasets(line.strip(), args.user, args.days):
+        task = line.strip()
+        if task[-1] not in '/*':
+            task = task + '*'
+        for ds in get_datasets(task, args.user, args.days):
             yield ds
 
 def run():
