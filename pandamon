@@ -16,6 +16,7 @@ _h_user='full user name, or blank for all'
 _h_stream='stream name fragment to filter for'
 _h_days='only look back this many days'
 _h_state='prefix dataset name with state'
+_h_clean='clean output: better for machine code'
 # defaults
 _def_user='GRID_USER_NAME'
 _def_stream='OUT'
@@ -47,6 +48,7 @@ def get_args():
     addinfo = parser.add_mutually_exclusive_group()
     addinfo.add_argument('-s','--stream', help=_h_stream + c, nargs='?',
                          default=None, const=_def_stream)
+    parser.add_argument('-c','--clean', action='store_true', help=_h_clean)
     args = parser.parse_args()
     if not args.taskname and sys.stdin.isatty():
         parser.print_usage()
@@ -100,7 +102,7 @@ _color_dic = {
     'aborted': RED,
     'failed': RED,
     }
-def getstatus(task):
+def getstatus(task, fmt_string='{s:<{l}} {i:<9} {t}'):
     if sys.stdout.isatty():
         color = _color_dic.get(task['superstatus'], ENDC)
         status_color = color + task['status'] + ENDC
@@ -109,7 +111,7 @@ def getstatus(task):
         status_color = task['status']
         nonprlen = 0
 
-    return '{s:<{l}} {i:<9} {t}'.format(
+    return fmt_string.format(
         s=status_color, t=task['taskname'], i=task['reqid'],
         l=(11 + nonprlen))
 
@@ -136,12 +138,13 @@ def run():
         datasets = stdin_iter(args)
 
     # loop over tasks
+    fmt_string = '{s} {i} {t}' if args.clean else '{s:<{l}} {i:<9} {t}'
     for task in datasets:
         if args.stream:
             for ds in get_ds(task['jeditaskid'], args.stream):
                 sys.stdout.write(ds + '\n')
         else:
-            sys.stdout.write(getstatus(task) + '\n')
+            sys.stdout.write(getstatus(task, fmt_string) + '\n')
 
 
 if __name__ == '__main__':
