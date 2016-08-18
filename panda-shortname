@@ -16,7 +16,7 @@ import sys
 import os
 
 def get_args():
-    c = '(with no arg: %(const)s)'
+    c = ' (with no arg: %(const)s)'
     user = os.environ.get('USER')
     def_prefix = ''
     if user is not None:
@@ -27,7 +27,9 @@ def get_args():
     parser.add_argument('ds_names', nargs='*')
     parser.add_argument(
         '-r', '--remove', action='store_true', help=_help_remove)
-    parser.add_argument('-p','--prefix', nargs='?', const=def_prefix)
+    parser.add_argument(
+        '-p','--prefix', nargs='?', const=def_prefix, help=_help_prefix + c)
+    parser.add_argument('-s', '--suffix')
     parser.add_argument('-v','--verbose', action='store_true')
     return parser.parse_args()
 
@@ -38,7 +40,7 @@ def run():
         ds_names = stdin_iter()
 
     for ds_name in ds_names:
-        oname = process_name(ds_name, args.remove, args.prefix)
+        oname = process_name(ds_name, args.remove, args.prefix, args.suffix)
         if args.verbose:
             prelen, postlen = len(ds_name), len(oname)
             diff = postlen - prelen
@@ -51,7 +53,7 @@ def stdin_iter():
     for line in sys.stdin:
         yield line.strip()
 
-def process_name(ds_name, remove, prefix=None):
+def process_name(ds_name, remove, prefix=None, suffix=None):
     # throw away the scope
     if ':' in ds_name:
         ds_name = ds_name.split(':',1)[-1]
@@ -76,6 +78,8 @@ def process_name(ds_name, remove, prefix=None):
         fields = [source, dsid, disc, prodstep, fmt, tags]
     if prefix is not None:
         fields.insert(0, prefix)
+    if suffix is not None:
+        fields.append(suffix)
     short_name = '.'.join(fields)
     return short_name
 
