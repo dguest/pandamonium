@@ -51,7 +51,7 @@ def get_args():
     addinfo.add_argument('-s','--stream', help=_h_stream + c, nargs='?',
                          default=None, const=_def_stream)
     parser.add_argument('-c','--clean', action='store_true', help=_h_clean)
-    parser.add_argument('--taskid', action='store_true', help=_h_taskid)
+    parser.add_argument('-t','--taskid', action='store_true', help=_h_taskid)
     args = parser.parse_args()
     if not args.taskname and sys.stdin.isatty():
         parser.print_usage()
