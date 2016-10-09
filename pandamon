@@ -107,11 +107,11 @@ _color_dic = {
     }
 def getstatus(task, args):
     if args.clean:
-        fmt_string = '{s} {i} {t}'
+        fmt_string = '{s} {i} {p}% {t} '
     elif args.taskid:
         fmt_string = '{i}'
     else:
-        fmt_string = '{s:<{l}} {i:<9} {t}'
+        fmt_string = '{s:<{l}} {i:<9} \t {p}% \t {t} '
     if sys.stdout.isatty() and not args.clean:
         color = _color_dic.get(task['superstatus'], ENDC)
         status_color = color + task['status'] + ENDC
@@ -123,7 +123,7 @@ def getstatus(task, args):
     if not args.taskid:
         outputString = fmt_string.format(
             s=status_color, t=task['taskname'], i=task['reqid'],
-            l=(11 + nonprlen))
+            l=(11 + nonprlen), p=task['dsinfo']["pctfinished"])
     if args.taskid:
         outputString = fmt_string.format( i=task['reqid'] )
 
