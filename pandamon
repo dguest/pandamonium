@@ -17,6 +17,7 @@ _h_stream='stream name fragment to filter for'
 _h_days='only look back this many days'
 _h_state='prefix dataset name with state'
 _h_clean='clean output: better for cut or grep'
+_h_taskid='output only taskid. useful for piping.'
 # defaults
 _def_user='GRID_USER_NAME'
 _def_stream='OUT'
@@ -43,13 +44,14 @@ def get_args():
     parser = argparse.ArgumentParser(
         description=__doc__,
         formatter_class=argparse.RawDescriptionHelpFormatter)
-    parser.add_argument('taskname', help=_h_taskname, nargs='?')
+    parser.add_argument('taskname', help=_h_taskname, nargs='?', default="user.%s"%(os.environ["USER"]) )
     parser.add_argument('-u','--user', help=_h_user + de, default=user)
     parser.add_argument('-d','--days', help=_h_days, type=int)
     addinfo = parser.add_mutually_exclusive_group()
     addinfo.add_argument('-s','--stream', help=_h_stream + c, nargs='?',
                          default=None, const=_def_stream)
     parser.add_argument('-c','--clean', action='store_true', help=_h_clean)
+    parser.add_argument('-t','--taskid', action='store_true', help=_h_taskid)
     args = parser.parse_args()
     if not args.taskname and sys.stdin.isatty():
         parser.print_usage()
@@ -103,9 +105,14 @@ _color_dic = {
     'aborted': RED,
     'failed': RED,
     }
-def getstatus(task, clean):
-    fmt_string = '{s} {i} {t}' if clean else '{s:<{l}} {i:<9} {t}'
-    if sys.stdout.isatty() and not clean:
+def getstatus(task, args):
+    if args.clean:
+        fmt_string = '{s} {i} {p}% {t} '
+    elif args.taskid:
+        fmt_string = '{i}'
+    else:
+        fmt_string = '{s:<{l}} {i:<9} {p:<6} {t} '
+    if sys.stdout.isatty() and not args.clean:
         color = _color_dic.get(task['superstatus'], ENDC)
         status_color = color + task['status'] + ENDC
         nonprlen = len(color) + len(ENDC)
@@ -113,9 +120,14 @@ def getstatus(task, clean):
         status_color = task['status']
         nonprlen = 0
 
-    return fmt_string.format(
-        s=status_color, t=task['taskname'], i=task['reqid'],
-        l=(11 + nonprlen))
+    if not args.taskid:
+        outputString = fmt_string.format(
+            s=status_color, t=task['taskname'], i=task['reqid'],
+            l=(11 + nonprlen), p="%i%%"%task['dsinfo']["pctfinished"])
+    if args.taskid:
+        outputString = fmt_string.format( i=task['reqid'] )
+
+    return outputString
 
 def stdin_iter(args):
     for line in sys.stdin:
@@ -145,7 +157,7 @@ def run():
             for ds in get_ds(task['jeditaskid'], args.stream):
                 sys.stdout.write(ds + '\n')
         else:
-            sys.stdout.write(getstatus(task, args.clean) + '\n')
+            sys.stdout.write(getstatus(task, args) + '\n')
 
 
 if __name__ == '__main__':
