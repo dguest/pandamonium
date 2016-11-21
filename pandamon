@@ -44,7 +44,8 @@ def get_args():
     parser = argparse.ArgumentParser(
         description=__doc__,
         formatter_class=argparse.RawDescriptionHelpFormatter)
-    parser.add_argument('taskname', help=_h_taskname, nargs='?', default="user.%s"%(os.environ["USER"]) )
+    userenv = 'RUCIO_ACCOUNT' if 'RUCIO_ACCOUNT' in os.environ else 'USER'
+    parser.add_argument('taskname', help=_h_taskname, nargs='?', default="user.%s"%(os.environ[userenv]) )
     parser.add_argument('-u','--user', help=_h_user + de, default=user)
     parser.add_argument('-d','--days', help=_h_days, type=int)
     addinfo = parser.add_mutually_exclusive_group()
