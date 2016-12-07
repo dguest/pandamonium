@@ -152,7 +152,11 @@ def run():
             taskname = taskname + '*'
         req = get_request(taskname, args.user, args.days)
         if args.print_browser_string:
-            sys.stdout.write(req.get_full_url() + '\n')
+            # I don't know why this is required, but requesting the
+            # same string in the browser somehow breaks the server so
+            # that the REST API no longer works. To prevent against
+            # this we undo the url encoding.
+            sys.stdout.write(urllib.unquote(req.get_full_url()) + '\n')
             return 0
         datasets = json.loads(urllib2.urlopen(req).read().decode('utf-8'))
     else:
