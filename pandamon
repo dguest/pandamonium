@@ -20,6 +20,8 @@ _h_clean='clean output: better for cut or grep'
 _h_taskid='output only taskid. useful for piping.'
 _h_print_browser_string = (
     'don\'t run query, just print string to copy into browser')
+_h_print_json_reply = (
+    'don\'t format output, just print the json reply from the server')
 # defaults
 _def_user='GRID_USER_NAME'
 _def_stream='OUT'
@@ -55,19 +57,23 @@ def get_args():
                          default=None, const=_def_stream)
     parser.add_argument('-c','--clean', action='store_true', help=_h_clean)
     parser.add_argument('-t','--taskid', action='store_true', help=_h_taskid)
-    parser.add_argument('-b','--print-browser-string', action='store_true',
+    output = parser.add_mutually_exclusive_group()
+    output.add_argument('-b','--print-browser-string', action='store_true',
                         help=_h_print_browser_string)
+    output.add_argument('-j','--print-json-reply', action='store_true')
     args = parser.parse_args()
     if not args.taskname and sys.stdin.isatty():
         parser.print_usage()
         sys.exit('ERROR: need to pipe datasets or specify a search string')
     return args
 
-def get_request(taskname, user, days=None):
+def get_request(taskname, user, days=None, json=True):
     pars = {
         'taskname': taskname,
         'username': user,
     }
+    if json:
+        pars['json'] = 1
     if days is not None:
         pars['days'] = days
     url = 'http://bigpanda.cern.ch/tasks/?' + urllib.urlencode(pars)
@@ -150,15 +156,16 @@ def run():
         # append a wildcard if I forgot
         if args.taskname[-1] not in '/*':
             taskname = taskname + '*'
-        req = get_request(taskname, args.user, args.days)
+        use_json = not args.print_browser_string
+        req = get_request(taskname, args.user, args.days, use_json)
         if args.print_browser_string:
-            # I don't know why this is required, but requesting the
-            # same string in the browser somehow breaks the server so
-            # that the REST API no longer works. To prevent against
-            # this we undo the url encoding.
-            sys.stdout.write(urllib.unquote(req.get_full_url()) + '\n')
+            sys.stdout.write(req.get_full_url() + '\n')
             return 0
-        datasets = json.loads(urllib2.urlopen(req).read().decode('utf-8'))
+        reply = urllib2.urlopen(req).read().decode('utf-8')
+        if args.print_json_reply:
+            sys.stdout.write(reply)
+            return 0
+        datasets = json.loads(reply)
     else:
         # otherwise read from stdin
         datasets = stdin_iter(args)
