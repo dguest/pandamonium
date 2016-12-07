@@ -18,6 +18,8 @@ _h_days='only look back this many days'
 _h_state='prefix dataset name with state'
 _h_clean='clean output: better for cut or grep'
 _h_taskid='output only taskid. useful for piping.'
+_h_print_browser_string = (
+    'don\'t run query, just print string to copy into browser')
 # defaults
 _def_user='GRID_USER_NAME'
 _def_stream='OUT'
@@ -53,13 +55,15 @@ def get_args():
                          default=None, const=_def_stream)
     parser.add_argument('-c','--clean', action='store_true', help=_h_clean)
     parser.add_argument('-t','--taskid', action='store_true', help=_h_taskid)
+    parser.add_argument('-b','--print-browser-string', action='store_true',
+                        help=_h_print_browser_string)
     args = parser.parse_args()
     if not args.taskname and sys.stdin.isatty():
         parser.print_usage()
         sys.exit('ERROR: need to pipe datasets or specify a search string')
     return args
 
-def get_datasets(taskname, user, days=None):
+def get_request(taskname, user, days=None):
     pars = {
         'taskname': taskname,
         'username': user,
@@ -67,8 +71,7 @@ def get_datasets(taskname, user, days=None):
     if days is not None:
         pars['days'] = days
     url = 'http://bigpanda.cern.ch/tasks/?' + urllib.urlencode(pars)
-    req = urllib2.Request(url, headers=_headers)
-    return json.loads(urllib2.urlopen(req).read().decode('utf-8'))
+    return urllib2.Request(url, headers=_headers)
 
 def get_ds(taskid, streamfrag):
     params = urllib.urlencode({'jeditaskid': taskid})
@@ -147,7 +150,11 @@ def run():
         # append a wildcard if I forgot
         if args.taskname[-1] not in '/*':
             taskname = taskname + '*'
-        datasets = get_datasets(taskname, args.user, args.days)
+        req = get_request(taskname, args.user, args.days)
+        if args.print_browser_string:
+            sys.stdout.write(req.get_full_url() + '\n')
+            return 0
+        datasets = json.loads(urllib2.urlopen(req).read().decode('utf-8'))
     else:
         # otherwise read from stdin
         datasets = stdin_iter(args)
