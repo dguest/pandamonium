@@ -22,6 +22,7 @@ _h_print_browser_string = (
     'don\'t run query, just print string to copy into browser')
 _h_print_json_reply = (
     'don\'t format output, just print the json reply from the server')
+_h_force_update = 'don\'t allow caching on the server, (force with timestamp)'
 # defaults
 _def_user='GRID_USER_NAME'
 _def_stream='OUT'
@@ -32,6 +33,7 @@ import json
 import sys, os
 import re
 import argparse
+import datetime
 
 _headers = {'Accept': 'application/json',
             'Content-Type':'application/json',
@@ -60,20 +62,27 @@ def get_args():
     output = parser.add_mutually_exclusive_group()
     output.add_argument('-b','--print-browser-string', action='store_true',
                         help=_h_print_browser_string)
-    output.add_argument('-j','--print-json-reply', action='store_true')
+    output.add_argument('-j','--print-json-reply', action='store_true',
+                        help=_h_print_json_reply)
+
+    parser.add_argument('-f','--force', action='store_true',
+                        help=_h_force_update)
+
     args = parser.parse_args()
     if not args.taskname and sys.stdin.isatty():
         parser.print_usage()
         sys.exit('ERROR: need to pipe datasets or specify a search string')
     return args
 
-def get_request(taskname, user, days=None, json=True):
+def get_request(taskname, user, days=None, json=True, force=False):
     pars = {
         'taskname': taskname,
         'username': user,
     }
     if json:
         pars['json'] = 1
+    if force:
+        pars['timestamp'] = datetime.datetime.utcnow().strftime('%H:%M:%S')
     if days is not None:
         pars['days'] = days
     url = 'http://bigpanda.cern.ch/tasks/?' + urllib.urlencode(pars)
@@ -157,7 +166,7 @@ def run():
         if args.taskname[-1] not in '/*':
             taskname = taskname + '*'
         use_json = not args.print_browser_string
-        req = get_request(taskname, args.user, args.days, use_json)
+        req = get_request(taskname, args.user, args.days, use_json, args.force)
         if args.print_browser_string:
             sys.stdout.write(req.get_full_url() + '\n')
             return 0
