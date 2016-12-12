@@ -88,9 +88,15 @@ def get_request(taskname, user, days=None, json=True, force=False):
     url = 'http://bigpanda.cern.ch/tasks/?' + urllib.urlencode(pars)
     return urllib2.Request(url, headers=_headers)
 
-def get_ds(taskid, streamfrag):
-    params = urllib.urlencode({'jeditaskid': taskid})
-    url = 'http://bigpanda.cern.ch/tasks/?' + params
+def get_ds(taskid, streamfrag, days=None):
+    pars = {
+        'jeditaskid': taskid,
+        'datasets': True,
+        'json': True
+    }
+    if days is not None:
+        pars['days'] = days
+    url = 'http://bigpanda.cern.ch/tasks/?' + urllib.urlencode(pars)
     req = urllib2.Request(url, headers=_headers)
     stuff = urllib2.urlopen(req).read().decode('utf-8')
     # containers = set()
@@ -182,7 +188,7 @@ def run():
     # loop over tasks
     for task in datasets:
         if args.stream:
-            for ds in get_ds(task['jeditaskid'], args.stream):
+            for ds in get_ds(task['jeditaskid'], args.stream, days=args.days):
                 sys.stdout.write(ds + '\n')
         else:
             sys.stdout.write(getstatus(task, args) + '\n')
