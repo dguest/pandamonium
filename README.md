@@ -15,12 +15,14 @@ How I do dat?
 
  1. Clone me
  2. Add the directory to your `PATH`
- 3. Type `pandamon user.<your user name>`
- 4. Pretty colors!!!
+ 3. Type `pandamon [user.<your user name>]`
+ 4. **Pretty colors!!!**
 
 You can add more of the task name if you want, and use wildcards
 (`*`). Wildcards are automatically appended to names that don't end in
 `*` or `/`.
+
+Without any arguments the task name defaults to `user.$RUCIO_ACCOUNT*`.
 
 Also try `pandamon -h`.
 
@@ -45,9 +47,9 @@ that shows up on the top of the bigpanda page). Or specify one with
 
 You can do more useful stuff by piping through standard Unix utilities
 
-```
+```sh
 > pandamon your.tasks > tasks.txt
-> cat tasks.txt | awk '$1 ~ /broken/ {print $3}' | pandamon -s IN
+> cat tasks.txt | awk '$1 ~ /broken/ {print $3}' | pandamon - -s IN
 ```
 
 Testimonials
@@ -57,6 +59,6 @@ Testimonials
 
 "I tried to use it but it's python 3" -- also Chase
 
-(I added python 2 support)
+(I added python 2 support, and that's all that's currently supported)
 
 I'll add other stuff too, if you want.

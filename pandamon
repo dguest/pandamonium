@@ -51,7 +51,8 @@ def get_args():
         description=__doc__,
         formatter_class=argparse.RawDescriptionHelpFormatter)
     userenv = 'RUCIO_ACCOUNT' if 'RUCIO_ACCOUNT' in os.environ else 'USER'
-    parser.add_argument('taskname', help=_h_taskname, nargs='?', default="user.%s"%(os.environ[userenv]) )
+    parser.add_argument('taskname', help=_h_taskname, nargs='?',
+                        default="user.{}".format(os.environ[userenv]) )
     parser.add_argument('-u','--user', help=_h_user + de, default=user)
     parser.add_argument('-d','--days', help=_h_days, type=int)
     addinfo = parser.add_mutually_exclusive_group()
@@ -132,11 +133,11 @@ _color_dic = {
     }
 def getstatus(task, args):
     if args.clean:
-        fmt_string = '{s} {i} {p}% {t} '
+        fmt_string = '{s} {i} {p:.0%} {t} '
     elif args.taskid:
         fmt_string = '{i}'
     else:
-        fmt_string = '{s:<{l}} {i:<9} {p:<6} {t} '
+        fmt_string = '{s:<{l}} {i:<9} {p: <6.0%} {t} '
     if sys.stdout.isatty() and not args.clean:
         color = _color_dic.get(task['superstatus'], ENDC)
         status_color = color + task['status'] + ENDC
@@ -148,7 +149,7 @@ def getstatus(task, args):
     if not args.taskid:
         outputString = fmt_string.format(
             s=status_color, t=task['taskname'], i=task['reqid'],
-            l=(11 + nonprlen), p="%i%%"%task['dsinfo']["pctfinished"])
+            l=(11 + nonprlen), p=task['dsinfo']["pctfinished"]/100)
     if args.taskid:
         outputString = fmt_string.format( i=task['reqid'] )
 
