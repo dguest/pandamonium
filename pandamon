@@ -4,7 +4,7 @@
 
 With a specified search string, will search for datasets with that
 name. If the name doesn't end in `*` or `/`, append a wildcard.
-Without a specified search string, the datasets can be piped.
+if the string is '-', the datasets are read from stdin.
 
 The user name can be specified via environment variable to reduce
 clutter.
@@ -159,7 +159,8 @@ def stdin_iter(args):
         task = line.strip()
         if task[-1] not in '/*':
             task = task + '*'
-        for ds in get_datasets(task, args.user, args.days):
+        req = get_request(task, args.user, args.days)
+        for ds in json.loads(urllib2.urlopen(req).read().decode('utf-8')):
             yield ds
 
 def run():
@@ -167,7 +168,7 @@ def run():
 
     taskname = args.taskname
     # try to search
-    if taskname is not None:
+    if taskname != '-':
         # append a wildcard if I forgot
         if args.taskname[-1] not in '/*':
             taskname = taskname + '*'
