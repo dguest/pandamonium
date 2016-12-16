@@ -149,7 +149,7 @@ def getstatus(task, args):
     if not args.taskid:
         outputString = fmt_string.format(
             s=status_color, t=task['taskname'], i=task['reqid'],
-            l=(11 + nonprlen), p=task['dsinfo']["pctfinished"]/100)
+            l=(11 + nonprlen), p=task['dsinfo']["pctfinished"]/100.0)
     if args.taskid:
         outputString = fmt_string.format( i=task['reqid'] )
 
