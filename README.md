@@ -49,13 +49,15 @@ You can do more useful stuff by piping through standard Unix utilities
 
 ```sh
 > pandamon your.tasks > tasks.txt
-> cat tasks.txt | awk '$1 ~ /broken/ {print $3}' | pandamon - -s IN
+> cat tasks.txt | awk '$1 ~ /broken/ {print $2}' | pandamon - -s IN
 ```
 
 Testimonials
 ------------
 
 "I like colors" -- Chase Schimmin
+
+"I found a bug" -- Danny Antrim (Fixed! Thanks Danny!)
 
 "I tried to use it but it's python 3" -- also Chase
 
