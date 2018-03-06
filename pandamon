@@ -14,6 +14,7 @@ clutter.
 _h_taskname='initial search string'
 _h_user='full user name, or blank for all'
 _h_stream='stream name fragment to filter for'
+_h_site='list grid site(s) where job ran'
 _h_days='only look back this many days'
 _h_state='prefix dataset name with state'
 _h_clean='clean output: better for cut or grep'
@@ -58,6 +59,8 @@ def get_args():
     addinfo = parser.add_mutually_exclusive_group()
     addinfo.add_argument('-s','--stream', help=_h_stream + c, nargs='?',
                          default=None, const=_def_stream)
+    addinfo.add_argument('-g','--grid-site', action='store_true',
+                         help=_h_site)
     parser.add_argument('-c','--clean', action='store_true', help=_h_clean)
     parser.add_argument('-t','--taskid', action='store_true', help=_h_taskid)
     output = parser.add_mutually_exclusive_group()
@@ -89,7 +92,7 @@ def get_request(taskname, user, days=None, json=True, force=False):
     url = 'http://bigpanda.cern.ch/tasks/?' + urllib.urlencode(pars)
     return urllib2.Request(url, headers=_headers)
 
-def get_ds(taskid, streamfrag, days=None):
+def get_ds_stream(taskid, streamfrag, days=None):
     pars = {
         'jeditaskid': taskid,
         'datasets': True,
@@ -100,13 +103,28 @@ def get_ds(taskid, streamfrag, days=None):
     url = 'http://bigpanda.cern.ch/tasks/?' + urllib.urlencode(pars)
     req = urllib2.Request(url, headers=_headers)
     stuff = urllib2.urlopen(req).read().decode('utf-8')
-    # containers = set()
     for entry in json.loads(stuff):
         datasets = entry['datasets']
         streams = {ds['streamname']: ds for ds in datasets}
         for stream, ds in streams.items():
             if streamfrag.upper() in stream:
                 yield streams[stream]['containername']
+
+def get_ds_site(taskid, days=None):
+    pars = {
+        'jeditaskid': taskid,
+        'datasets': True,
+        'json': True
+    }
+    if days is not None:
+        pars['days'] = days
+    url = 'http://bigpanda.cern.ch/tasks/?' + urllib.urlencode(pars)
+    req = urllib2.Request(url, headers=_headers)
+    stuff = urllib2.urlopen(req).read().decode('utf-8')
+    for entry in json.loads(stuff):
+        datasets = entry['datasets']
+        out_ds = set(ds['site'] for ds in datasets)
+        yield ' '.join(out_ds - set([""]))
 
 
 RED = '\033[0;91m'
@@ -190,7 +208,12 @@ def run():
     # loop over tasks
     for task in datasets:
         if args.stream:
-            for ds in get_ds(task['jeditaskid'], args.stream, days=args.days):
+            for ds in get_ds_stream(task['jeditaskid'],
+                                    args.stream,
+                                    days=args.days):
+                sys.stdout.write(ds + '\n')
+        elif args.grid_site:
+            for ds in get_ds_site(task['jeditaskid'], days=args.days):
                 sys.stdout.write(ds + '\n')
         else:
             sys.stdout.write(getstatus(task, args) + '\n')
