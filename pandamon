@@ -24,6 +24,7 @@ _h_print_browser_string = (
 _h_print_json_reply = (
     'don\'t format output, just print the json reply from the server')
 _h_force_update = 'don\'t allow caching on the server, (force with timestamp)'
+_h_filter = 'filter for jobs in some states states (i.e. broken, running...)'
 # defaults
 _def_user='GRID_USER_NAME'
 _def_stream='OUT'
@@ -68,9 +69,12 @@ def get_args():
                         help=_h_print_browser_string)
     output.add_argument('-j','--print-json-reply', action='store_true',
                         help=_h_print_json_reply)
+    parser.add_argument('-i', '--filter', help=_h_filter,
+                        nargs='+', dest='filt')
 
     parser.add_argument('-f','--force', action='store_true',
                         help=_h_force_update)
+
 
     args = parser.parse_args()
     if not args.taskname and sys.stdin.isatty():
@@ -183,6 +187,9 @@ def run():
     else:
         # otherwise read from stdin
         datasets = stdin_iter(args)
+
+    if args.filt:
+        datasets = [ds for ds in datasets if ds['status'] in args.filt]
 
     # loop over tasks
     for task in datasets:
