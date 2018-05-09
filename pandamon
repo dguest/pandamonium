@@ -82,6 +82,7 @@ def get_request(taskname, user, days=None, json=True, force=False):
     pars = {
         'taskname': taskname,
         'username': user,
+        'datasets': True,
     }
     if json:
         pars['json'] = 1
@@ -92,39 +93,17 @@ def get_request(taskname, user, days=None, json=True, force=False):
     url = 'http://bigpanda.cern.ch/tasks/?' + urllib.urlencode(pars)
     return urllib2.Request(url, headers=_headers)
 
-def get_ds_stream(taskid, streamfrag, days=None):
-    pars = {
-        'jeditaskid': taskid,
-        'datasets': True,
-        'json': True
-    }
-    if days is not None:
-        pars['days'] = days
-    url = 'http://bigpanda.cern.ch/tasks/?' + urllib.urlencode(pars)
-    req = urllib2.Request(url, headers=_headers)
-    stuff = urllib2.urlopen(req).read().decode('utf-8')
-    for entry in json.loads(stuff):
-        datasets = entry['datasets']
-        streams = {ds['streamname']: ds for ds in datasets}
-        for stream, ds in streams.items():
-            if streamfrag.upper() in stream:
-                yield streams[stream]['containername']
+def get_ds_stream(entry, streamfrag):
+    datasets = entry['datasets']
+    streams = {ds['streamname']: ds for ds in datasets}
+    for stream, ds in streams.items():
+        if streamfrag.upper() in stream:
+            yield streams[stream]['containername']
 
-def get_ds_site(taskid, days=None):
-    pars = {
-        'jeditaskid': taskid,
-        'datasets': True,
-        'json': True
-    }
-    if days is not None:
-        pars['days'] = days
-    url = 'http://bigpanda.cern.ch/tasks/?' + urllib.urlencode(pars)
-    req = urllib2.Request(url, headers=_headers)
-    stuff = urllib2.urlopen(req).read().decode('utf-8')
-    for entry in json.loads(stuff):
-        datasets = entry['datasets']
-        out_ds = set(ds['site'] for ds in datasets)
-        yield ' '.join(out_ds - set([""]))
+def get_ds_site(entry):
+    datasets = entry['datasets']
+    out_ds = set(ds['site'] for ds in datasets)
+    return ' '.join(out_ds - set([""]))
 
 
 RED = '\033[0;91m'
@@ -208,13 +187,11 @@ def run():
     # loop over tasks
     for task in datasets:
         if args.stream:
-            for ds in get_ds_stream(task['jeditaskid'],
-                                    args.stream,
-                                    days=args.days):
+            for ds in get_ds_stream(task, args.stream):
                 sys.stdout.write(ds + '\n')
         elif args.grid_site:
-            for ds in get_ds_site(task['jeditaskid'], days=args.days):
-                sys.stdout.write(ds + '\n')
+            ds = get_ds_site(task)
+            sys.stdout.write(ds + '\n')
         else:
             sys.stdout.write(getstatus(task, args) + '\n')
 
