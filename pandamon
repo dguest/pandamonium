@@ -25,6 +25,7 @@ _h_print_json_reply = (
     'don\'t format output, just print the json reply from the server')
 _h_force_update = 'don\'t allow caching on the server, (force with timestamp)'
 _h_filter = 'filter for jobs in some states states (i.e. broken, running...)'
+_h_more_info_string = 'print even more information about your jobs!'
 # defaults
 _def_user='GRID_USER_NAME'
 _def_stream='OUT'
@@ -71,6 +72,8 @@ def get_args():
                         help=_h_print_json_reply)
     parser.add_argument('-i', '--filter', help=_h_filter,
                         nargs='+', dest='filt')
+    output.add_argument('-m', '--more-info', action='store_true',
+                        help=_h_more_info_string)
 
     parser.add_argument('-f','--force', action='store_true',
                         help=_h_force_update)
@@ -137,6 +140,8 @@ def getstatus(task, args):
         fmt_string = '{s} {i} {p:.0%} {t} '
     elif args.taskid:
         fmt_string = '{i}'
+    elif args.more_info:
+        fmt_string = '{s:<{l}} {j: <9} {i:<9} {p: <6.0%} {f: <6.0%} {t} '
     else:
         fmt_string = '{s:<{l}} {i:<9} {p: <6.0%} {t} '
     if sys.stdout.isatty() and not args.clean:
@@ -148,9 +153,14 @@ def getstatus(task, args):
         nonprlen = 0
 
     if not args.taskid:
-        outputString = fmt_string.format(
-            s=status_color, t=task['taskname'], i=task['reqid'],
-            l=(11 + nonprlen), p=task['dsinfo']["pctfinished"]/100.0)
+        if args.more_info:
+            outputString = fmt_string.format(
+                s=status_color, t=task['taskname'], j=task['jeditaskid'], i=task['reqid'],
+                l=(11 + nonprlen), p=task['dsinfo']["pctfinished"]/100.0, f=task['dsinfo']["pctfailed"]/100.0)
+        else:
+            outputString = fmt_string.format(
+                s=status_color, t=task['taskname'], i=task['reqid'],
+                l=(11 + nonprlen), p=task['dsinfo']["pctfinished"]/100.0)
     if args.taskid:
         outputString = fmt_string.format( i=task['reqid'] )
 
