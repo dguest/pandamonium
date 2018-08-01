@@ -105,7 +105,8 @@ def get_ds_stream(entry, streamfrag):
     streams = {ds['streamname']: ds for ds in datasets}
     for stream, ds in streams.items():
         if streamfrag.upper() in stream:
-            yield streams[stream]['containername']
+            st = streams[stream]
+            yield st['containername'] or st['datasetname']
 
 def get_ds_site(entry):
     datasets = entry['datasets']
