@@ -63,6 +63,7 @@ def get_args():
     addinfo.add_argument('-g','--grid-site', action='store_true',
                          help=_h_site)
     parser.add_argument('-c','--clean', action='store_true', help=_h_clean)
+    parser.add_argument('--force-color', action='store_true')
     parser.add_argument('-t','--taskid', action='store_true', help=_h_taskid)
     output = parser.add_mutually_exclusive_group()
     output.add_argument('-b','--print-browser-string', action='store_true',
@@ -144,7 +145,7 @@ def getstatus(task, args):
         fmt_string = '{s:<{l}} {j: <9} {i:<9} {p: <6.0%} {f: <6.0%} {t} '
     else:
         fmt_string = '{s:<{l}} {i:<9} {p: <6.0%} {t} '
-    if sys.stdout.isatty() and not args.clean:
+    if (sys.stdout.isatty() and not args.clean) or args.force_color:
         color = _color_dic.get(task['superstatus'], ENDC)
         status_color = color + task['status'] + ENDC
         nonprlen = len(color) + len(ENDC)
