@@ -48,7 +48,9 @@ def get_args():
     if not user:
         de = ' (please set {} environment variable)'.format(_def_user)
     else:
-        de = d
+        de = ' (set via {} variable to "%(default)s")'.format(_def_user)
+    de += (' Note that this should be your full name,'
+           ' i.e. "Daniel Joseph Antrim"')
     parser = argparse.ArgumentParser(
         description=__doc__,
         formatter_class=argparse.RawDescriptionHelpFormatter)
