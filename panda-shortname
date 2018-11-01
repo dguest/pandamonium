@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+#!/usr/bin/env python
 
 """Crop dataset names. No one cares about your stupid generator tune.
 
@@ -60,10 +60,11 @@ def process_name(ds_name, remove, prefix=None, suffix=None):
     # remove trailing slash
     ds_name = ds_name.rstrip('/')
 
-    source, dsid, disc, prodstep, fmt, tags, *crap = ds_name.split('.')
+    res = ds_name.split('.')
+    (source, dsid, disc, prodstep, fmt, tags), _ = res[:6], res[6:]
 
     # sanity checks
-    assert dsid.isdecimal(), "dsid ({}) not a number".format(dsid)
+    assert dsid.isdigit(), "dsid ({}) not a number".format(dsid)
     assert is_tag(tags), "'{}' doesn't look like a tag".format(tags)
     assert fmt.isupper(), "'{}' doesn't look like a format".format(fmt)
 
