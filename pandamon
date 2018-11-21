@@ -38,8 +38,7 @@ import argparse
 import datetime
 
 _headers = {'Accept': 'application/json',
-            'Content-Type':'application/json',
-            'User-Agent':'User-Agent: curl/7.43.0'}
+            'Content-Type':'application/json'}
 
 def get_args():
     d = ' (default: %(default)s)'
@@ -90,16 +89,17 @@ def get_args():
 def get_request(taskname, user, days=None, json=True, force=False):
     pars = {
         'taskname': taskname,
-        'username': user,
         'datasets': True,
     }
+    if user:
+        pars['username'] = user
     if json:
         pars['json'] = 1
     if force:
         pars['timestamp'] = datetime.datetime.utcnow().strftime('%H:%M:%S')
     if days is not None:
         pars['days'] = days
-    url = 'http://bigpanda.cern.ch/tasks/?' + urllib.urlencode(pars)
+    url = 'https://bigpanda.cern.ch/tasks/?' + urllib.urlencode(pars)
     return urllib2.Request(url, headers=_headers)
 
 def get_ds_stream(entry, streamfrag):
