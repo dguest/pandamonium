@@ -24,6 +24,7 @@ def get_args():
     parser.add_argument('-b', '--build', action='store_true')
     parser.add_argument('-n', '--nfiles', type=int)
     parser.add_argument('-x', '--exclude-sites', nargs="*")
+    parser.add_argument('-m', '--new-site', action='store_true')
     args = parser.parse_args()
     if not args.taskids and sys.stdin.isatty():
         parser.print_usage()
@@ -37,12 +38,14 @@ def retry(jobs, args):
     retry_opts = {}
     if args.build:
         retry_opts['retryBuild'] = True
-    if args.nfiles or args.exclude_sites:
+    if args.nfiles or args.exclude_sites or args.new_site:
         new_opts = {}
         if args.nfiles:
             new_opts['nFilesPerJob'] = args.nfiles
         if args.exclude_sites:
             new_opts['excludeSite'] = ','.join(args.exclude_sites)
+        if args.new_site:
+            new_opts['newSite'] = True
         retry_opts['newOpts'] = new_opts
     for job in jobs:
         pbook.retry(job, **retry_opts)
