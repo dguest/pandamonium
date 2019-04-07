@@ -61,6 +61,8 @@ Testimonials
 
 "I tried to use it but it's python 3" -- also Chase
 
+"I made a merge request. It was approved!" -- Alex
+
 (I added python 2 support, and that's all that's currently supported)
 
 I'll add other stuff too, if you want.

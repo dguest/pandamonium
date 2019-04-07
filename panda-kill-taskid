@@ -13,7 +13,7 @@ epi='Thanks ATLAS. Thatlas.'
 import sys, os
 import argparse
 
-
+from pandatools import PBookCore
 
 def get_args():
     parser = argparse.ArgumentParser(
@@ -29,7 +29,7 @@ def get_args():
 
 def kill(jobs, args):
     #enforceEnter, verbose, restoreDB
-    pbook = PBookCore(False, False, False)
+    pbook = PBookCore.PBookCore(False, False, False)
     pbook.sync()
     for job in jobs:
         pbook.kill(job)
@@ -42,17 +42,11 @@ def stdin_iter():
 if __name__ == '__main__':
     args = get_args()
 
-    # this is a thing of beauty, who needs import when you have execfile?
-    # --- begin beauty ---
     try:
-        tmp, __name__ = __name__, 'pbook'
-        execfile(os.path.join(os.environ["ATLAS_LOCAL_ROOT_BASE"],
-                              "x86_64/PandaClient/current/bin/pbook") )
-        __name__ = tmp
+        from pandatools import PBookCore
     except ImportError:
         print("Failed to load PandaClient, please set up locally")
         sys.exit(1)
-    # --- end thing of beauty ---
 
     jobs = []
     if not args.taskids:
