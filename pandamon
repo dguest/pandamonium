@@ -244,6 +244,11 @@ def run():
     if args.filt:
         datasets = [ds for ds in datasets if ds['status'] in args.filt]
 
+    if args.metadata and datasets and 'jobs_metadata' not in datasets[0]:
+        sys.stderr.write(
+            'WARNING: hit batch metadata limit (ATLASPANDA-492)'
+            ' running the slow way instead\n')
+
     # loop over tasks
     for task in datasets:
         if args.stream:
