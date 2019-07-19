@@ -22,9 +22,11 @@ _h_print_browser_string = (
     'don\'t run query, just print string to copy into browser')
 _h_print_json_reply = (
     'don\'t format output, just print the json reply from the server')
+_h_metadata='print the contents of userMetadata.json'
 _h_force_update = 'don\'t allow caching on the server, (force with timestamp)'
 _h_filter = 'filter for jobs in some states states (i.e. broken, running...)'
-_h_more_info_string = 'print even more information about your jobs!'
+_h_more_info_string = (
+    'The Danny Antrim option: print even more information about your jobs!')
 # defaults
 _def_user='GRID_USER_NAME'
 _def_stream='OUT'
@@ -71,9 +73,11 @@ def get_args():
                         help=_h_print_browser_string)
     output.add_argument('-j','--print-json-reply', action='store_true',
                         help=_h_print_json_reply)
+    output.add_argument('-m', '--metadata', action='store_true',
+                        help=_h_metadata)
     parser.add_argument('-i', '--filter', help=_h_filter,
                         nargs='+', dest='filt')
-    output.add_argument('-m', '--more-info', action='store_true',
+    output.add_argument('-a', '--more-info', action='store_true',
                         help=_h_more_info_string)
 
     parser.add_argument('-f','--force', action='store_true',
@@ -101,6 +105,20 @@ def get_request(taskname, user, days=None, json=True, force=False):
     if days is not None:
         pars['days'] = days
     url = 'https://bigpanda.cern.ch/tasks/?' + urllib.urlencode(pars)
+    return urllib2.Request(url, headers=_headers)
+
+def get_jobid_request(id, days=None, force=False):
+    pars = {
+        'jeditaskid': id,
+        'limit':10000,
+        'json': 1,
+        'fields': 'metastruct'
+    }
+    if force:
+        pars['timestamp'] = datetime.datetime.utcnow().strftime('%H:%M:%S')
+    if days is not None:
+        pars['days'] = days
+    url = 'https://bigpanda.cern.ch/jobs/?' + urllib.urlencode(pars)
     return urllib2.Request(url, headers=_headers)
 
 def get_ds_stream(entry, streamfrag):
@@ -210,12 +228,23 @@ def run():
         if args.stream:
             for ds in get_ds_stream(task, args.stream):
                 sys.stdout.write(ds + '\n')
+        elif args.metadata:
+            sys.stdout.write(format_meta(task, args.days, args.force) + '\n')
         elif args.grid_site:
             ds = get_ds_site(task)
             sys.stdout.write(ds + '\n')
         else:
             sys.stdout.write(getstatus(task, args) + '\n')
 
+def format_meta(task, days, force):
+    req = get_jobid_request(task['jeditaskid'], days, force)
+    reply = json.loads(urllib2.urlopen(req).read().decode('utf-8'))
+    jobs = [j for j in reply['jobs'] if j]
+    if len(jobs) != 1:
+        return '{t}  INCOMPLETE'.format(t=task['taskname'])
+    meat = jobs[0]['metastruct']['user_job_metadata']
+    fields = ', '.join(['{}:{}'.format(k,v) for k, v in meat.items()])
+    return '{t}  {f}'.format(t=task['taskname'], f=fields)
 
 if __name__ == '__main__':
     run()

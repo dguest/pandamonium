@@ -52,6 +52,24 @@ You can do more useful stuff by piping through standard Unix utilities
 > cat tasks.txt | awk '$1 ~ /broken/ {print $2}' | pandamon - -s IN
 ```
 
+or (faster)
+
+```sh
+pandamon your.tasks -i broken -s IN
+```
+
+#### Read the job user metadata ####
+
+Now panda supports a `userMetadata.json` file for additional information in your job. Print it with
+
+```sh
+pandamon your.tasks -m
+```
+
+See [this JIRA ticket][1] where they plan to make it faster.
+
+[1]: https://its.cern.ch/jira/browse/ATLASPANDA-492
+
 Testimonials
 ------------
 
