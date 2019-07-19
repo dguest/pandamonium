@@ -90,12 +90,15 @@ def get_args():
         sys.exit('ERROR: need to pipe datasets or specify a search string')
     return args
 
-def get_request(taskname, user, days=None, json=True, force=False):
+def get_request(taskname, user, days=None, json=True, force=False,
+                metadata=False):
     pars = {
         'taskname': taskname,
         'datasets': True,
         'limit':10000,
     }
+    if metadata:
+        pars['extra'] = 'metastruct'
     if user:
         pars['username'] = user
     if json:
@@ -189,12 +192,14 @@ def getstatus(task, args):
     return outputString
 
 def format_meta(task, days, force):
-    req = get_jobid_request(task['jeditaskid'], days, force)
-    reply = json.loads(urllib2.urlopen(req).read().decode('utf-8'))
-    jobs = [j for j in reply['jobs'] if j]
+    jobs = task.get('jobs_metadata',{}).values()
+    if not jobs:
+        req = get_jobid_request(task['jeditaskid'], days, force)
+        reply = json.loads(urllib2.urlopen(req).read().decode('utf-8'))
+        jobs = [j['metastruct'] for j in reply['jobs'] if j]
     sum_data = {}
     for j in jobs:
-        meat = j['metastruct']['user_job_metadata']
+        meat = j['user_job_metadata']
         for k, v in meat.items():
             if k != sum_data:
                 sum_data[k] = v
@@ -208,7 +213,7 @@ def stdin_iter(args):
         task = line.strip()
         if task[-1] not in '/*':
             task = task + '*'
-        req = get_request(task, args.user, args.days)
+        req = get_request(task, args.user, args.days, args.metadata)
         for ds in json.loads(urllib2.urlopen(req).read().decode('utf-8')):
             yield ds
 
@@ -222,7 +227,8 @@ def run():
         if args.taskname[-1] not in '/*':
             taskname = taskname + '*'
         use_json = not args.print_browser_string
-        req = get_request(taskname, args.user, args.days, use_json, args.force)
+        req = get_request(taskname, args.user, args.days, use_json,
+                          args.force, args.metadata)
         if args.print_browser_string:
             sys.stdout.write(req.get_full_url() + '\n')
             return 0
