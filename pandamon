@@ -188,6 +188,21 @@ def getstatus(task, args):
 
     return outputString
 
+def format_meta(task, days, force):
+    req = get_jobid_request(task['jeditaskid'], days, force)
+    reply = json.loads(urllib2.urlopen(req).read().decode('utf-8'))
+    jobs = [j for j in reply['jobs'] if j]
+    sum_data = {}
+    for j in jobs:
+        meat = j['metastruct']['user_job_metadata']
+        for k, v in meat.items():
+            if k != sum_data:
+                sum_data[k] = v
+            else:
+                sum_data += v
+    string = ', '.join(['{}:{}'.format(k,v) for k, v in sum_data.items()])
+    return '{t}  {f}'.format(t=task['taskname'], f=string)
+
 def stdin_iter(args):
     for line in sys.stdin:
         task = line.strip()
@@ -235,16 +250,6 @@ def run():
             sys.stdout.write(ds + '\n')
         else:
             sys.stdout.write(getstatus(task, args) + '\n')
-
-def format_meta(task, days, force):
-    req = get_jobid_request(task['jeditaskid'], days, force)
-    reply = json.loads(urllib2.urlopen(req).read().decode('utf-8'))
-    jobs = [j for j in reply['jobs'] if j]
-    if len(jobs) != 1:
-        return '{t}  INCOMPLETE'.format(t=task['taskname'])
-    meat = jobs[0]['metastruct']['user_job_metadata']
-    fields = ', '.join(['{}:{}'.format(k,v) for k, v in meat.items()])
-    return '{t}  {f}'.format(t=task['taskname'], f=fields)
 
 if __name__ == '__main__':
     run()
