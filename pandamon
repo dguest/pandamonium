@@ -42,6 +42,7 @@ import datetime
 _headers = {'Accept': 'application/json',
             'Content-Type':'application/json'}
 
+
 def get_args():
     d = ' (default: %(default)s)'
     c = ' (default: %(const)s)'
@@ -193,7 +194,7 @@ def getstatus(task, args):
 
 def format_meta(task, days, force):
     jobs = task.get('jobs_metadata',{}).values()
-    if not jobs:
+    if not jobs and task['status'] in {'done', 'finished'}:
         req = get_jobid_request(task['jeditaskid'], days, force)
         reply = json.loads(urllib2.urlopen(req).read().decode('utf-8'))
         jobs = [j['metastruct'] for j in reply['jobs'] if j]
