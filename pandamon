@@ -125,8 +125,15 @@ def get_jobid_request(id, days=None, force=False):
     url = 'https://bigpanda.cern.ch/jobs/?' + urllib.urlencode(pars)
     return urllib2.Request(url, headers=_headers)
 
+_error_ds_re = re.compile('"([^ "]*)"')
 def get_ds_stream(entry, streamfrag):
     datasets = entry['datasets']
+    # in some cases the input dataset no longer exists, try to extract
+    # it
+    if not datasets and streamfrag.lower().startswith('in'):
+        ed = 'errordialog'
+        if ed in entry:
+            yield _error_ds_re.search(entry[ed]).group(1)
     streams = {ds['streamname']: ds for ds in datasets}
     for stream, ds in streams.items():
         if streamfrag.upper() in stream:
