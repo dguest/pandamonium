@@ -58,6 +58,15 @@ or (faster)
 pandamon your.tasks -i broken -s IN
 ```
 
+#### Filter by taskid range ####
+
+Use to only display jobs in a specific range.
+This is useful for when you inevitably submit jobs with wrong parameters that you don't want to retry.
+
+```sh
+pandamon -r 12000-12100
+```
+
 #### Read the job user metadata ####
 
 Now panda supports a `userMetadata.json` file for additional information in your job. Print it with

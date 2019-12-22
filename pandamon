@@ -25,6 +25,7 @@ _h_print_json_reply = (
 _h_metadata='print the contents of userMetadata.json'
 _h_force_update = 'don\'t allow caching on the server, (force with timestamp)'
 _h_filter = 'filter for jobs in some states states (i.e. broken, running...)'
+_h_range = 'filter for jobs in some range of task IDs (i.e 11506-11606, 12000-)'
 _h_more_info_string = (
     'The Danny Antrim option: print even more information about your jobs!')
 # defaults
@@ -78,9 +79,9 @@ def get_args():
                         help=_h_metadata)
     parser.add_argument('-i', '--filter', help=_h_filter,
                         nargs='+', dest='filt')
+    parser.add_argument('-r', '--range', help=_h_range, dest='rnge')
     output.add_argument('-a', '--more-info', action='store_true',
                         help=_h_more_info_string)
-
     parser.add_argument('-f','--force', action='store_true',
                         help=_h_force_update)
 
@@ -251,6 +252,15 @@ def run():
 
     if args.filt:
         datasets = [ds for ds in datasets if ds['status'] in args.filt]
+
+    if args.rnge:
+        r = args.rnge.split('-')
+        if args.rnge[0] == '-':
+            datasets = [ds for ds in datasets if int(ds['reqid']) <= int(r[1])]
+        elif args.rnge[-1] == '-':
+            datasets = [ds for ds in datasets if int(ds['reqid']) >= int(r[0])]
+        else:
+            datasets = [ds for ds in datasets if int(ds['reqid']) in range(int(r[0]),int(r[1]))]
 
     if args.metadata and datasets and 'jobs_metadata' not in datasets[0]:
         sys.stderr.write(
