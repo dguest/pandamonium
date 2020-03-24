@@ -7,6 +7,7 @@ Runs on pure python beauty.
 
 """
 _h_jobid = 'panda taskid, you can also pipe them'
+_h_kill = 'kill any running jobs before retrying them'
 
 epi='Thanks ATLAS. Thatlas.'
 
@@ -25,6 +26,7 @@ def get_args():
     parser.add_argument('-n', '--nfiles', type=int)
     parser.add_argument('-x', '--exclude-sites', nargs="*")
     parser.add_argument('-m', '--new-site', action='store_true')
+    parser.add_argument('-k', '--kill', action='store_true', help=_h_kill)
     args = parser.parse_args()
     if not args.taskids and sys.stdin.isatty():
         parser.print_usage()
@@ -47,7 +49,11 @@ def retry(jobs, args):
             new_opts['newSite'] = True
         retry_opts['newOpts'] = new_opts
     for job in jobs:
-        pbook.retry(job, **retry_opts)
+        if args.kill:
+            cmd = pbook.killAndRetry
+        else:
+            cmd = pbook.retry
+        cmd(job, **retry_opts)
 
 def stdin_iter():
     for line in sys.stdin:
