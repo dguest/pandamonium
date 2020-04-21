@@ -208,7 +208,10 @@ def format_meta(task, days, force):
         jobs = [j['metastruct'] for j in reply['jobs'] if j]
     sum_data = {}
     for j in jobs:
-        meat = j['user_job_metadata']
+        try:
+            meat = j['user_job_metadata']
+        except KeyError:
+            meat = j
         for k, v in meat.items():
             if k != sum_data:
                 sum_data[k] = v
