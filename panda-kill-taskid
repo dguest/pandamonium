@@ -4,22 +4,24 @@
 Kill jobs with pbook
 
 Runs on pure python beauty.
-
 """
+
 _h_jobid = 'panda taskid, you can also pipe them'
 
-epi='Thanks ATLAS. Thatlas.'
+epi = 'Thanks ATLAS. Thatlas.'
 
 import sys, os
 import argparse
 
 from pandatools import PBookCore
 
+
 def get_args():
     parser = argparse.ArgumentParser(
         description=__doc__,
         formatter_class=argparse.RawDescriptionHelpFormatter,
-        epilog=epi)
+        epilog=epi,
+    )
     parser.add_argument('taskids', type=int, nargs='*', help=_h_jobid)
     args = parser.parse_args()
     if not args.taskids and sys.stdin.isatty():
@@ -27,17 +29,20 @@ def get_args():
         sys.exit('ERROR: need to pipe in a taskid')
     return args
 
+
 def kill(jobs, args):
-    #enforceEnter, verbose, restoreDB
+    # enforceEnter, verbose, restoreDB
     pbook = PBookCore.PBookCore()
 
     for job in jobs:
         pbook.kill(job)
 
+
 def stdin_iter():
     for line in sys.stdin:
         for job in line.split():
             yield int(job)
+
 
 if __name__ == '__main__':
     args = get_args()
