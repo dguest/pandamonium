@@ -38,8 +38,16 @@ _h_more_info_string = (
 _def_user = 'GRID_USER_NAME'
 _def_stream = 'OUT'
 
-import urllib2
-import urllib
+# Attempt to default to Python 3
+try:
+    from urllib.request import urlopen
+    from urllib.request import Request
+    from urllib.parse import urlencode
+except:
+    from urllib2 import urlopen
+    from urllib2 import Request
+    from urllib import urlencode
+
 import json
 import sys, os
 import re
@@ -137,8 +145,8 @@ def get_request(
         pars['timestamp'] = datetime.datetime.utcnow().strftime('%H:%M:%S')
     if days is not None:
         pars['days'] = days
-    url = 'https://bigpanda.cern.ch/tasks/?' + urllib.urlencode(pars)
-    return urllib2.Request(url, headers=_headers)
+    url = 'https://bigpanda.cern.ch/tasks/?' + urlencode(pars)
+    return Request(url, headers=_headers)
 
 
 def get_jobid_request(id, days=None, force=False):
@@ -152,8 +160,8 @@ def get_jobid_request(id, days=None, force=False):
         pars['timestamp'] = datetime.datetime.utcnow().strftime('%H:%M:%S')
     if days is not None:
         pars['days'] = days
-    url = 'https://bigpanda.cern.ch/jobs/?' + urllib.urlencode(pars)
-    return urllib2.Request(url, headers=_headers)
+    url = 'https://bigpanda.cern.ch/jobs/?' + urlencode(pars)
+    return Request(url, headers=_headers)
 
 
 _error_ds_re = re.compile('"([^ "]*)"')
@@ -250,7 +258,7 @@ def format_meta(task, days, force):
     jobs = task.get('jobs_metadata', {}).values()
     if not jobs and task['status'] in {'done', 'finished'}:
         req = get_jobid_request(task['jeditaskid'], days, force)
-        reply = json.loads(urllib2.urlopen(req).read().decode('utf-8'))
+        reply = json.loads(urlopen(req).read().decode('utf-8'))
         jobs = [j['metastruct'] for j in reply['jobs'] if j]
     sum_data = {}
     for j in jobs:
@@ -273,7 +281,7 @@ def stdin_iter(args):
         if task[-1] not in '/*':
             task = task + '*'
         req = get_request(task, args.user, args.days, args.metadata)
-        for ds in json.loads(urllib2.urlopen(req).read().decode('utf-8')):
+        for ds in json.loads(urlopen(req).read().decode('utf-8')):
             yield ds
 
 
@@ -293,7 +301,7 @@ def run():
         if args.print_browser_string:
             sys.stdout.write(req.get_full_url() + '\n')
             return 0
-        reply = urllib2.urlopen(req).read().decode('utf-8')
+        reply = urlopen(req).read().decode('utf-8')
         if args.print_json_reply:
             sys.stdout.write(reply)
             return 0
