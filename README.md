@@ -1,6 +1,8 @@
 Pandamonium
 ===========
 
+[![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
+
 Cause panda and rucio don't work too good
 
 This tells you if your jobs are done. And stuff like that.
