@@ -1,7 +1,6 @@
 Pandamonium
 ===========
 
-[![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
 
 Cause panda and rucio don't work too good
 
@@ -90,8 +89,12 @@ Testimonials
 
 "I tried to use it but it's python 3" -- also Chase
 
+(I added python 2 support, and that's all that's currently supported)
+
 "I made a merge request. It was approved!" -- Alex
 
-(I added python 2 support, and that's all that's currently supported)
+"It needs to use [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)" -- Matthew Feickert
+
+(Hey man, whatever floats your boat!)
 
 I'll add other stuff too, if you want.
