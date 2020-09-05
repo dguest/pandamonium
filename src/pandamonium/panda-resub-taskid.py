@@ -11,7 +11,7 @@ _h_kill = 'kill any running jobs before retrying them'
 
 epi = 'Thanks ATLAS. Thatlas.'
 
-import sys, os
+import sys
 import argparse
 
 

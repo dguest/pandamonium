@@ -58,7 +58,6 @@ _headers = {'Accept': 'application/json', 'Content-Type': 'application/json'}
 
 
 def get_args():
-    d = ' (default: %(default)s)'
     c = ' (default: %(const)s)'
     user = os.environ.get(_def_user, '')
     if not user:
