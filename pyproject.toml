@@ -1,3 +1,8 @@
+[build-system]
+# Minimum requirements for the build system to execute.
+requires = ["wheel", "setuptools>=30.3.0", "attrs>=17.1", "setuptools_scm"]
+build-backend = "setuptools.build_meta"
+
 [tool.black]
 line-length = 79
 target-version = ['py36', 'py37', 'py38']
@@ -10,3 +15,12 @@ exclude = '''
   | build
 )/
 '''
+
+[tool.check-manifest]
+ignore = [
+    'tests/**',
+    '.*',
+    'pyproject.toml',
+    'pytest.ini',
+    'CODE_OF_CONDUCT.md',
+]
