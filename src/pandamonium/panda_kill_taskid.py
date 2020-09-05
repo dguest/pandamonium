@@ -13,7 +13,11 @@ epi = 'Thanks ATLAS. Thatlas.'
 import sys
 import argparse
 
-from pandatools import PBookCore
+try:
+    from pandatools import PBookCore
+except ImportError:
+    print("Failed to load PandaClient, please set up locally")
+    sys.exit(1)
 
 
 def get_args():
@@ -44,14 +48,8 @@ def stdin_iter():
             yield int(job)
 
 
-if __name__ == '__main__':
+def main():
     args = get_args()
-
-    try:
-        from pandatools import PBookCore
-    except ImportError:
-        print("Failed to load PandaClient, please set up locally")
-        sys.exit(1)
 
     jobs = []
     if not args.taskids:

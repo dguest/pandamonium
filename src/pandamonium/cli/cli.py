@@ -1,5 +1,5 @@
 import logging
-import click
+import argparse
 
 from ..version import __version__
 
@@ -7,7 +7,16 @@ logging.basicConfig()
 log = logging.getLogger(__name__)
 
 
-@click.group(context_settings=dict(help_option_names=["-h", "--help"]))
-@click.version_option(version=__version__)
 def pandamonium():
-    pass
+    parser = argparse.ArgumentParser(
+        description="library CLI",
+        formatter_class=argparse.RawDescriptionHelpFormatter,
+    )
+    parser.add_argument(
+        "-v",
+        "--version",
+        action="version",
+        version="pandamonium, version {version}".format(version=__version__),
+    )
+
+    return parser.parse_args()

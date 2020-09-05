@@ -284,7 +284,7 @@ def stdin_iter(args):
             yield ds
 
 
-def run():
+def main():
     args = get_args()
 
     taskname = args.taskname
@@ -343,7 +343,3 @@ def run():
             sys.stdout.write(ds + '\n')
         else:
             sys.stdout.write(getstatus(task, args) + '\n')
-
-
-if __name__ == '__main__':
-    run()

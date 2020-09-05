@@ -39,7 +39,7 @@ def get_args():
     return parser.parse_args()
 
 
-def run():
+def main():
     args = get_args()
     ds_names = args.ds_names
     if not ds_names:
@@ -117,7 +117,3 @@ def is_tag(tags):
     tag_finder = re.compile('([a-z][0-9]+_?)+')
     matches = tag_finder.match(tags).group(0)
     return len(matches) == len(tags)
-
-
-if __name__ == '__main__':
-    run()
