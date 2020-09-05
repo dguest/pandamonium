@@ -1,6 +1,7 @@
 Pandamonium
 ===========
 
+[![GitHub Project](https://img.shields.io/badge/GitHub--blue?style=social&logo=GitHub)](https://github.com/dguest/pandamonium)
 
 Cause panda and rucio don't work too good
 
