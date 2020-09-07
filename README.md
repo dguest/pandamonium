@@ -45,7 +45,7 @@ The virtual environment is not special in anyway, so you should treat it as you 
 
 ### Install from PyPI
 
-You can install `pandamonium` from PyPI into any Python virtual environment by simply running
+You can install [`pandamonium` from PyPI][pandamonium_PyPI] into any Python virtual environment by simply running
 
 ```
 python -m pip install pandamonium
@@ -69,6 +69,8 @@ if [ -d "your/path/stuff/goes/here/pandamonium" ]; then
     export PATH
 fi
 ```
+
+[pandamonium_PyPI]: https://pypi.org/project/pandamonium/
 
 ## Use
 
