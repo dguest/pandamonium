@@ -91,8 +91,7 @@ Without any arguments the task name defaults to `user.$RUCIO_ACCOUNT*`.
 
 Also try `pandamon -h`.
 
-Other tricks
-------------
+## Other tricks
 
 #### Get input/output dataset names ####
 
@@ -144,8 +143,7 @@ See [this JIRA ticket][1] where they plan to make it faster.
 
 [1]: https://its.cern.ch/jira/browse/ATLASPANDA-492
 
-Testimonials
-------------
+## Testimonials
 
 "I like colors" -- Chase Schimmin
 
