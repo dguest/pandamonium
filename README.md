@@ -153,7 +153,7 @@ See [this JIRA ticket][1] where they plan to make it faster.
 
 "I tried to use it but it's python 3" -- also Chase
 
-(I added python 2 support, and that's all that's currently supported)
+(I added Python 2 support, but `pandamonium` is also Python 3 compliant)
 
 "I made a merge request. It was approved!" -- Alex
 
