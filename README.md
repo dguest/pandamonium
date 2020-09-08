@@ -55,9 +55,9 @@ python -m pip install pandamonium
 
 If you want to install the original version of `pandamonium` before it became a library and was a set of global level Python scripts you can still do that.
 
-1. Clone the repository at tag `v0.0.1`
+1. Clone the repository at tag `v0.1`
 ```
-git clone git@github.com:dguest/pandamonium.git --branch v0.0.1
+git clone git@github.com:dguest/pandamonium.git --branch v0.1
 ```
 2. Add the directory to your `PATH`.
 Maybe with something like the following in your `.bashrc`
