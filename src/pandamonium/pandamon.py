@@ -343,3 +343,7 @@ def main():
             sys.stdout.write(ds + '\n')
         else:
             sys.stdout.write(getstatus(task, args) + '\n')
+
+
+if __name__ == "__main__":
+    main()

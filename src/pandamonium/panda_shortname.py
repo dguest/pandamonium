@@ -117,3 +117,7 @@ def is_tag(tags):
     tag_finder = re.compile('([a-z][0-9]+_?)+')
     matches = tag_finder.match(tags).group(0)
     return len(matches) == len(tags)
+
+
+if __name__ == "__main__":
+    main()

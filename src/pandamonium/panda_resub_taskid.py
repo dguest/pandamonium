@@ -79,3 +79,7 @@ def main():
         jobs = args.taskids
 
     retry(jobs, args)
+
+
+if __name__ == "__main__":
+    main()

@@ -21,4 +21,8 @@ ignore = [
     '.*',
     'pyproject.toml',
     'CODE_OF_CONDUCT.md',
+    'pandamon',
+    'panda-kill-taskid',
+    'panda-resub-taskid',
+    'panda-shortname'
 ]
