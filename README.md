@@ -71,6 +71,11 @@ if [ -d "your/path/stuff/goes/here/pandamonium" ]; then
 fi
 ```
 
+#### Deprecation Warning
+
+You can currently just clone the repository and have `master` work the same way as `v0.1` on LXPLUS or ATLAS Connect, but this will be deprecated in the future in favor of installing `pandamonium` as a Python library.
+The motivation for this is that `pandamonium` does have hard requirements on other libraries, and it is better to fully contain them through the installation of the library through PyPI.
+
 [pandamonium_PyPI]: https://pypi.org/project/pandamonium/
 
 ## Use
