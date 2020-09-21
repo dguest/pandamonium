@@ -17,7 +17,8 @@ This tells you if your jobs are done. And stuff like that.
 
 ### Install from PyPI
 
-You can install [`pandamonium` from PyPI][pandamonium_PyPI] into any Python virtual environment by simply running
+You can install [`pandamonium` from PyPI][pandamonium_PyPI] into any Python
+virtual environment by simply running
 
 ```
 python -m pip install pandamonium
@@ -25,7 +26,8 @@ python -m pip install pandamonium
 
 ### Install the old style of global scripts
 
-If you want to install the original version of `pandamonium` before it became a library and was a set of global level Python scripts you can still do that.
+If you want to install the original version of `pandamonium` before it became a
+library and was a set of global level Python scripts you can still do that.
 
 1. Clone the repository at tag `v0.1`
 ```
@@ -44,14 +46,21 @@ fi
 
 #### Deprecation Warning
 
-You can currently just clone the repository and have `master` work the same way as `v0.1` on LXPLUS or ATLAS Connect, but this will be deprecated in the future in favor of installing `pandamonium` as a Python library.
-The motivation for this is that `pandamonium` does have hard requirements on other libraries, and it is better to fully contain them through the installation of the library through PyPI.
+You can currently just clone the repository and have `master` work the same way
+as `v0.1` on LXPLUS or ATLAS Connect, but this will be deprecated in the future
+in favor of installing `pandamonium` as a Python library.
+The motivation for this is that `pandamonium` does have hard requirements on
+other libraries, and it is better to fully contain them through the installation
+of the library through PyPI.
 
 [pandamonium_PyPI]: https://pypi.org/project/pandamonium/
 
 ### Notes if working on a remote server
 
-If you are working from a remote server where you do not have control over your Python runtimes (e.g. LXPLUS, ALTAS Connect login nodes) it is recommended that you bootstrap `virtualenv` and a default Python virtual environment by adding the following to your `.profile` or `.bash_profile`
+If you are working from a remote server where you do not have control over your
+Python runtimes (e.g. LXPLUS, ALTAS Connect login nodes) it is recommended that
+you bootstrap `virtualenv` and a default Python virtual environment by adding
+the following to your `.bashrc` or `.bashrc_user`
 
 ```
 # Ensure local virtualenv setup
@@ -70,14 +79,16 @@ if [ -d "${HOME}/.venvs/base" ]; then
 fi
 ```
 
-After that source your `.profile` or `.bash_profile` and then if you want to create a default Python virtual environment run
+After that source your `.profile` or `.bash_profile` and then if you want to
+create a default Python virtual environment run
 
 ```
 virtualenv "${HOME}/.venvs/base"
 ```
 
 You will now be dropped into a virtual environment named `base` each time you login.
-The virtual environment is not special in anyway, so you should treat it as you would any other.
+The virtual environment is not special in anyway, so you should treat it as you
+would any other.
 
 ## Use
 
@@ -134,7 +145,8 @@ pandamon your.tasks -i broken -s IN
 #### Filter by taskid range ####
 
 Use to only display jobs in a specific range.
-This is useful for when you inevitably submit jobs with wrong parameters that you don't want to retry.
+This is useful for when you inevitably submit jobs with wrong parameters that
+you don't want to retry.
 
 ```sh
 pandamon -r 12000-12100
@@ -142,7 +154,9 @@ pandamon -r 12000-12100
 
 #### Read the job user metadata ####
 
-Now panda supports a `userMetadata.json` file for additional information in your job. Print it with
+Now panda supports a `userMetadata.json` file for additional information in your
+job.
+Print it with
 
 ```sh
 pandamon your.tasks -m
