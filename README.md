@@ -15,36 +15,6 @@ This tells you if your jobs are done. And stuff like that.
 
 ## Installation
 
-### Notes if working on a remote server
-
-If you are working from a remote server where you do not have control over your Python runtimes (e.g. LXPLUS, ALTAS Connect login nodes) it is recommended that you bootstrap `virtualenv` and a default Python virtual environment by adding the following to your `.profile` or `.bash_profile`
-
-```
-# Ensure local virtualenv setup
-if [ ! -f "${HOME}/opt/venv/bin/virtualenv" ]; then
-    curl -sL --location --output /tmp/virtualenv.pyz https://bootstrap.pypa.io/virtualenv.pyz
-    python /tmp/virtualenv.pyz ~/opt/venv # Change this to python3 if available
-    ~/opt/venv/bin/pip install --upgrade pip
-    ~/opt/venv/bin/pip install virtualenv
-    mkdir -p ~/bin  # Ensure exists if new machine
-    ln -s ~/opt/venv/bin/virtualenv ~/bin/virtualenv
-fi
-
-# default venv from `virtualenv "${HOME}/.venvs/base"`
-if [ -d "${HOME}/.venvs/base" ]; then
-	  source "${HOME}/.venvs/base/bin/activate"
-fi
-```
-
-After that source your `.profile` or `.bash_profile` and then if you want to create a default Python virtual environment run
-
-```
-virtualenv "${HOME}/.venvs/base"
-```
-
-You will now be dropped into a virtual environment named `base` each time you login.
-The virtual environment is not special in anyway, so you should treat it as you would any other.
-
 ### Install from PyPI
 
 You can install [`pandamonium` from PyPI][pandamonium_PyPI] into any Python virtual environment by simply running
@@ -78,6 +48,36 @@ You can currently just clone the repository and have `master` work the same way 
 The motivation for this is that `pandamonium` does have hard requirements on other libraries, and it is better to fully contain them through the installation of the library through PyPI.
 
 [pandamonium_PyPI]: https://pypi.org/project/pandamonium/
+
+### Notes if working on a remote server
+
+If you are working from a remote server where you do not have control over your Python runtimes (e.g. LXPLUS, ALTAS Connect login nodes) it is recommended that you bootstrap `virtualenv` and a default Python virtual environment by adding the following to your `.profile` or `.bash_profile`
+
+```
+# Ensure local virtualenv setup
+if [ ! -f "${HOME}/opt/venv/bin/virtualenv" ]; then
+    curl -sL --location --output /tmp/virtualenv.pyz https://bootstrap.pypa.io/virtualenv.pyz
+    python /tmp/virtualenv.pyz ~/opt/venv # Change this to python3 if available
+    ~/opt/venv/bin/pip install --upgrade pip
+    ~/opt/venv/bin/pip install virtualenv
+    mkdir -p ~/bin  # Ensure exists if new machine
+    ln -s ~/opt/venv/bin/virtualenv ~/bin/virtualenv
+fi
+
+# default venv from `virtualenv "${HOME}/.venvs/base"`
+if [ -d "${HOME}/.venvs/base" ]; then
+	  source "${HOME}/.venvs/base/bin/activate"
+fi
+```
+
+After that source your `.profile` or `.bash_profile` and then if you want to create a default Python virtual environment run
+
+```
+virtualenv "${HOME}/.venvs/base"
+```
+
+You will now be dropped into a virtual environment named `base` each time you login.
+The virtual environment is not special in anyway, so you should treat it as you would any other.
 
 ## Use
 
