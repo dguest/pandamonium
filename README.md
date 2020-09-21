@@ -44,15 +44,6 @@ if [ -d "your/path/stuff/goes/here/pandamonium" ]; then
 fi
 ```
 
-#### Deprecation Warning
-
-You can currently just clone the repository and have `master` work the same way
-as `v0.1` on LXPLUS or ATLAS Connect, but this will be deprecated in the future
-in favor of installing `pandamonium` as a Python library.
-The motivation for this is that `pandamonium` does have hard requirements on
-other libraries, and it is better to fully contain them through the installation
-of the library through PyPI.
-
 [pandamonium_PyPI]: https://pypi.org/project/pandamonium/
 
 ### Notes if working on a remote server
@@ -75,7 +66,7 @@ fi
 
 # default venv from `virtualenv "${HOME}/.venvs/base"`
 if [ -d "${HOME}/.venvs/base" ]; then
-	  source "${HOME}/.venvs/base/bin/activate"
+    source "${HOME}/.venvs/base/bin/activate"
 fi
 ```
 
@@ -92,16 +83,11 @@ would any other.
 
 ## Use
 
-1. Make sure that you have a valid `X509` certificate.
-If you are on LXPLUS or ATLAS Connect this can be done with
-```
-lsetup emi
-```
-2. Run `pandamon`
+1. Run `pandamon`
 ```
 pandamon [user.<your user name>]
 ```
-3. See the output of your current GRID jobs with **pretty colors!**
+2. See the output of your current GRID jobs with **pretty colors!**
 
 You can add more of the task name if you want, and use wildcards
 (`*`). Wildcards are automatically appended to names that don't end in
@@ -110,6 +96,15 @@ You can add more of the task name if you want, and use wildcards
 Without any arguments the task name defaults to `user.$RUCIO_ACCOUNT*`.
 
 Also try `pandamon -h`.
+
+### Deprecation Warning
+
+You can currently just clone the repository and have `master` work the same way
+as `v0.1` on LXPLUS or ATLAS Connect, but this will be deprecated in the future
+in favor of installing `pandamonium` as a Python library.
+The motivation for this is that `pandamonium` does have hard requirements on
+other libraries, and it is better to fully contain them through the installation
+of the library through PyPI.
 
 ## Other tricks
 
