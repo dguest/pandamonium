@@ -29,7 +29,7 @@ python -m pip install pandamonium
 If you want to install the original version of `pandamonium` before it became a
 library and was a set of global level Python scripts you can still do that.
 
-1. Clone the repository at tag `v0.1`
+1. Clone the repository at tag [`v0.1`][tag_v0.1]
 ```
 git clone git@github.com:dguest/pandamonium.git --branch v0.1
 ```
@@ -45,6 +45,7 @@ fi
 ```
 
 [pandamonium_PyPI]: https://pypi.org/project/pandamonium/
+[tag_v0.1]: https://github.com/dguest/pandamonium/releases/tag/v0.1
 
 ### Notes if working on a remote server
 
@@ -100,8 +101,8 @@ Also try `pandamon -h`.
 ### Deprecation Warning
 
 You can currently just clone the repository and have `master` work the same way
-as `v0.1` on LXPLUS or ATLAS Connect, but this will be deprecated in the future
-in favor of installing `pandamonium` as a Python library.
+as [`v0.1`][tag_v0.1] on LXPLUS or ATLAS Connect, but this will be deprecated in
+the future in favor of installing `pandamonium` as a Python library.
 The motivation for this is that `pandamonium` does have hard requirements on
 other libraries, and it is better to fully contain them through the installation
 of the library through PyPI.
