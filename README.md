@@ -1,4 +1,5 @@
-# Pandamonium
+Pandamonium
+===========
 
 [![GitHub Project](https://img.shields.io/badge/GitHub--blue?style=social&logo=GitHub)](https://github.com/dguest/pandamonium)
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.4019463.svg)](https://doi.org/10.5281/zenodo.4019463)
