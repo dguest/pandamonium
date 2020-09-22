@@ -1,6 +1,8 @@
 Pandamonium
 ===========
 
+[![GitHub Project](https://img.shields.io/badge/GitHub--blue?style=social&logo=GitHub)](https://github.com/dguest/pandamonium)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.4019463.svg)](https://doi.org/10.5281/zenodo.4019463)
 
 Cause panda and rucio don't work too good
 
@@ -11,13 +13,82 @@ This tells you if your jobs are done. And stuff like that.
  - Gets input / output dataset names
  - Works with piping, other unix nice things
 
-How I do dat?
--------------
+## Installation
 
- 1. Clone me
- 2. Add the directory to your `PATH`
- 3. Type `pandamon [user.<your user name>]`
- 4. **Pretty colors!!!**
+### Install from PyPI
+
+You can install [`pandamonium` from PyPI][pandamonium_PyPI] into any Python
+virtual environment by simply running
+
+```
+python -m pip install pandamonium
+```
+
+### Install the old style of global scripts
+
+If you want to install the original version of `pandamonium` before it became a
+library and was a set of global level Python scripts you can still do that.
+
+1. Clone the repository at tag [`v0.1`][tag_v0.1]
+```
+git clone git@github.com:dguest/pandamonium.git --branch v0.1
+```
+2. Add the directory to your `PATH`.
+Maybe with something like the following in your `.bashrc`
+
+```
+# Add pandamonium to PATH
+if [ -d "your/path/stuff/goes/here/pandamonium" ]; then
+    PATH="your/path/stuff/goes/here/pandamonium${PATH:+:${PATH}}"
+    export PATH
+fi
+```
+
+[pandamonium_PyPI]: https://pypi.org/project/pandamonium/
+[tag_v0.1]: https://github.com/dguest/pandamonium/releases/tag/v0.1
+
+### Notes if working on a remote server
+
+If you are working from a remote server where you do not have control over your
+Python runtimes (e.g. LXPLUS, ALTAS Connect login nodes) it is recommended that
+you bootstrap `virtualenv` and a default Python virtual environment by adding
+the following to your `.bashrc` or `.bashrc_user`
+
+```
+# Ensure local virtualenv setup
+if [ ! -f "${HOME}/opt/venv/bin/virtualenv" ]; then
+    curl -sL --location --output /tmp/virtualenv.pyz https://bootstrap.pypa.io/virtualenv.pyz
+    python /tmp/virtualenv.pyz ~/opt/venv # Change this to python3 if available
+    ~/opt/venv/bin/pip install --upgrade pip
+    ~/opt/venv/bin/pip install virtualenv
+    mkdir -p ~/bin  # Ensure exists if new machine
+    ln -s ~/opt/venv/bin/virtualenv ~/bin/virtualenv
+fi
+
+# default venv from `virtualenv "${HOME}/.venvs/base"`
+if [ -d "${HOME}/.venvs/base" ]; then
+    source "${HOME}/.venvs/base/bin/activate"
+fi
+```
+
+After that source your `.profile` or `.bash_profile` and then if you want to
+create a default Python virtual environment run
+
+```
+virtualenv "${HOME}/.venvs/base"
+```
+
+You will now be dropped into a virtual environment named `base` each time you login.
+The virtual environment is not special in anyway, so you should treat it as you
+would any other.
+
+## Use
+
+1. Run `pandamon`
+```
+pandamon [user.<your user name>]
+```
+2. See the output of your current GRID jobs with **pretty colors!**
 
 You can add more of the task name if you want, and use wildcards
 (`*`). Wildcards are automatically appended to names that don't end in
@@ -27,8 +98,16 @@ Without any arguments the task name defaults to `user.$RUCIO_ACCOUNT*`.
 
 Also try `pandamon -h`.
 
-Other tricks
-------------
+### Deprecation Warning
+
+You can currently just clone the repository and have `master` work the same way
+as [`v0.1`][tag_v0.1] on LXPLUS or ATLAS Connect, but this will be deprecated in
+the future in favor of installing `pandamonium` as a Python library.
+The motivation for this is that `pandamonium` does have hard requirements on
+other libraries, and it is better to fully contain them through the installation
+of the library through PyPI.
+
+## Other tricks
 
 #### Get input/output dataset names ####
 
@@ -62,7 +141,8 @@ pandamon your.tasks -i broken -s IN
 #### Filter by taskid range ####
 
 Use to only display jobs in a specific range.
-This is useful for when you inevitably submit jobs with wrong parameters that you don't want to retry.
+This is useful for when you inevitably submit jobs with wrong parameters that
+you don't want to retry.
 
 ```sh
 pandamon -r 12000-12100
@@ -70,7 +150,9 @@ pandamon -r 12000-12100
 
 #### Read the job user metadata ####
 
-Now panda supports a `userMetadata.json` file for additional information in your job. Print it with
+Now panda supports a `userMetadata.json` file for additional information in your
+job.
+Print it with
 
 ```sh
 pandamon your.tasks -m
@@ -80,8 +162,7 @@ See [this JIRA ticket][1] where they plan to make it faster.
 
 [1]: https://its.cern.ch/jira/browse/ATLASPANDA-492
 
-Testimonials
-------------
+## Testimonials
 
 "I like colors" -- Chase Schimmin
 
@@ -89,7 +170,7 @@ Testimonials
 
 "I tried to use it but it's python 3" -- also Chase
 
-(I added python 2 support, and that's all that's currently supported)
+(I added Python 2 support, but `pandamonium` is also Python 3 compliant)
 
 "I made a merge request. It was approved!" -- Alex
 
