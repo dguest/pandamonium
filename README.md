@@ -15,13 +15,13 @@ This tells you if your jobs are done. And stuff like that.
 
 ## Installation
 
-### Install from PyPI
+### Install from TestPyPI
 
-You can install [`pandamonium` from PyPI][pandamonium_PyPI] into any Python
+You can install [`pandamonium` from TestPyPI][pandamonium_TestPyPI] into any Python
 virtual environment by simply running
 
 ```
-python -m pip install pandamonium
+python -m pip install --extra-index-url https://test.pypi.org/simple/ --pre pandamonium
 ```
 
 ### Install the old style of global scripts
@@ -44,6 +44,7 @@ if [ -d "your/path/stuff/goes/here/pandamonium" ]; then
 fi
 ```
 
+[pandamonium_TestPyPI]: https://test.pypi.org/project/pandamonium/
 [pandamonium_PyPI]: https://pypi.org/project/pandamonium/
 [tag_v0.1]: https://github.com/dguest/pandamonium/releases/tag/v0.1
 
