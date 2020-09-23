@@ -21,7 +21,8 @@ You can install [`pandamonium` from TestPyPI][pandamonium_TestPyPI] into any Pyt
 virtual environment by simply running
 
 ```
-python -m pip install --extra-index-url https://test.pypi.org/simple/ --pre pandamonium
+python -m pip install panda-client # Needed as panda-client isn't on TestPyPI
+python -m pip install -i https://test.pypi.org/simple/ --pre pandamonium
 ```
 
 ### Install the old style of global scripts
