@@ -27,6 +27,11 @@ virtual environment by simply running
 python -m pip install --extra-index-url https://test.pypi.org/simple/ --pre pandamonium
 ```
 
+> **Note:** This adds TestPyPI as [an additional package index to search][additional_package_index]
+when installing `pandamonium` specifically.
+PyPI will still be the default package index `pip` will attempt to install from
+for all dependencies.
+
 ### Install the old style of global scripts
 
 If you want to install the original version of `pandamonium` before it became a
@@ -48,6 +53,7 @@ fi
 ```
 
 [pandamonium_TestPyPI]: https://test.pypi.org/project/pandamonium/
+[additional_package_index]: https://pip.pypa.io/en/stable/reference/pip_install/#cmdoption-extra-index-url
 [pandamonium_PyPI]: https://pypi.org/project/pandamonium/
 [tag_v0.1]: https://github.com/dguest/pandamonium/releases/tag/v0.1
 
