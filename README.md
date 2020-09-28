@@ -47,60 +47,8 @@ if [ -d "your/path/stuff/goes/here/pandamonium" ]; then
 fi
 ```
 
-### Install from TestPyPI
-
-You can install the latest development release of
-[`pandamonium` from TestPyPI][pandamonium_TestPyPI] into any Python virtual
-environment by running
-
-```
-python -m pip install --extra-index-url https://test.pypi.org/simple/ --pre pandamonium
-```
-
-> **Note:** This adds TestPyPI as [an additional package index to search][additional_package_index]
-when installing `pandamonium` specifically.
-PyPI will still be the default package index `pip` will attempt to install from
-for all dependencies.
-
-[pandamonium_TestPyPI]: https://test.pypi.org/project/pandamonium/
-[additional_package_index]: https://pip.pypa.io/en/stable/reference/pip_install/#cmdoption-extra-index-url
 [pandamonium_PyPI]: https://pypi.org/project/pandamonium/
 [tag_v0.1]: https://github.com/dguest/pandamonium/releases/tag/v0.1
-
-### Notes if working on a remote server
-
-If you are working from a remote server where you do not have control over your
-Python runtimes (e.g. LXPLUS, ALTAS Connect login nodes) it is recommended that
-you bootstrap `virtualenv` and a default Python virtual environment by adding
-the following to your `.bashrc` or `.bashrc_user`
-
-```
-# Ensure local virtualenv setup
-if [ ! -f "${HOME}/opt/venv/bin/virtualenv" ]; then
-    curl -sL --location --output /tmp/virtualenv.pyz https://bootstrap.pypa.io/virtualenv.pyz
-    python /tmp/virtualenv.pyz ~/opt/venv # Change this to python3 if available
-    ~/opt/venv/bin/pip install --upgrade pip
-    ~/opt/venv/bin/pip install virtualenv
-    mkdir -p ~/bin  # Ensure exists if new machine
-    ln -s ~/opt/venv/bin/virtualenv ~/bin/virtualenv
-fi
-
-# default venv from `virtualenv "${HOME}/.venvs/base"`
-if [ -d "${HOME}/.venvs/base" ]; then
-    source "${HOME}/.venvs/base/bin/activate"
-fi
-```
-
-After that source your `.profile` or `.bash_profile` and then if you want to
-create a default Python virtual environment run
-
-```
-virtualenv "${HOME}/.venvs/base"
-```
-
-You will now be dropped into a virtual environment named `base` each time you login.
-The virtual environment is not special in anyway, so you should treat it as you
-would any other.
 
 ## Use
 
@@ -181,6 +129,61 @@ pandamon your.tasks -m
 See [this JIRA ticket][1] where they plan to make it faster.
 
 [1]: https://its.cern.ch/jira/browse/ATLASPANDA-492
+
+## Additional Technical Information
+
+### Install development release from TestPyPI
+
+You can install the latest development release of
+[`pandamonium` from TestPyPI][pandamonium_TestPyPI] into any Python virtual
+environment by running
+
+```
+python -m pip install --extra-index-url https://test.pypi.org/simple/ --pre pandamonium
+```
+
+> **Note:** This adds TestPyPI as [an additional package index to search][additional_package_index]
+when installing `pandamonium` specifically.
+PyPI will still be the default package index `pip` will attempt to install from
+for all dependencies.
+
+[pandamonium_TestPyPI]: https://test.pypi.org/project/pandamonium/
+[additional_package_index]: https://pip.pypa.io/en/stable/reference/pip_install/#cmdoption-extra-index-url
+
+### Notes if working on a remote server
+
+If you are working from a remote server where you do not have control over your
+Python runtimes (e.g. LXPLUS, ALTAS Connect login nodes) it is recommended that
+you bootstrap `virtualenv` and a default Python virtual environment by adding
+the following to your `.bashrc` or `.bashrc_user`
+
+```
+# Ensure local virtualenv setup
+if [ ! -f "${HOME}/opt/venv/bin/virtualenv" ]; then
+    curl -sL --location --output /tmp/virtualenv.pyz https://bootstrap.pypa.io/virtualenv.pyz
+    python /tmp/virtualenv.pyz ~/opt/venv # Change this to python3 if available
+    ~/opt/venv/bin/pip install --upgrade pip
+    ~/opt/venv/bin/pip install virtualenv
+    mkdir -p ~/bin  # Ensure exists if new machine
+    ln -s ~/opt/venv/bin/virtualenv ~/bin/virtualenv
+fi
+
+# default venv from `virtualenv "${HOME}/.venvs/base"`
+if [ -d "${HOME}/.venvs/base" ]; then
+    source "${HOME}/.venvs/base/bin/activate"
+fi
+```
+
+After that source your `.profile` or `.bash_profile` and then if you want to
+create a default Python virtual environment run
+
+```
+virtualenv "${HOME}/.venvs/base"
+```
+
+You will now be dropped into a virtual environment named `base` each time you login.
+The virtual environment is not special in anyway, so you should treat it as you
+would any other.
 
 ## Testimonials
 
