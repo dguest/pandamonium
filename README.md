@@ -5,6 +5,7 @@ Pandamonium
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.4019463.svg)](https://doi.org/10.5281/zenodo.4019463)
 
 [![PyPI version](https://badge.fury.io/py/pandamonium.svg)](https://badge.fury.io/py/pandamonium)
+[![Supported Python versions](https://img.shields.io/pypi/pyversions/pandamonium.svg)](https://pypi.org/project/pandamonium/)
 
 Cause panda and rucio don't work too good
 
