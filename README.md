@@ -18,19 +18,14 @@ This tells you if your jobs are done. And stuff like that.
 
 ## Installation
 
-### Install from TestPyPI
+### Install from PyPI
 
-You can install [`pandamonium` from TestPyPI][pandamonium_TestPyPI] into any Python
+You can install [`pandamonium` from PyPI][pandamonium_PyPI] into any Python
 virtual environment by simply running
 
 ```
-python -m pip install --extra-index-url https://test.pypi.org/simple/ --pre pandamonium
+python -m pip install pandamonium
 ```
-
-> **Note:** This adds TestPyPI as [an additional package index to search][additional_package_index]
-when installing `pandamonium` specifically.
-PyPI will still be the default package index `pip` will attempt to install from
-for all dependencies.
 
 ### Install the old style of global scripts
 
@@ -51,6 +46,21 @@ if [ -d "your/path/stuff/goes/here/pandamonium" ]; then
     export PATH
 fi
 ```
+
+### Install from TestPyPI
+
+You can install the latest development release of
+[`pandamonium` from TestPyPI][pandamonium_TestPyPI] into any Python virtual
+environment by simply running
+
+```
+python -m pip install --extra-index-url https://test.pypi.org/simple/ --pre pandamonium
+```
+
+> **Note:** This adds TestPyPI as [an additional package index to search][additional_package_index]
+when installing `pandamonium` specifically.
+PyPI will still be the default package index `pip` will attempt to install from
+for all dependencies.
 
 [pandamonium_TestPyPI]: https://test.pypi.org/project/pandamonium/
 [additional_package_index]: https://pip.pypa.io/en/stable/reference/pip_install/#cmdoption-extra-index-url
