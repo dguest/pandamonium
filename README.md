@@ -21,7 +21,7 @@ This tells you if your jobs are done. And stuff like that.
 ### Install from PyPI
 
 You can install [`pandamonium` from PyPI][pandamonium_PyPI] into any Python
-virtual environment by simply running
+virtual environment by running
 
 ```
 python -m pip install pandamonium
@@ -51,7 +51,7 @@ fi
 
 You can install the latest development release of
 [`pandamonium` from TestPyPI][pandamonium_TestPyPI] into any Python virtual
-environment by simply running
+environment by running
 
 ```
 python -m pip install --extra-index-url https://test.pypi.org/simple/ --pre pandamonium
