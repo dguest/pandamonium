@@ -25,7 +25,7 @@ Installation
 ### Install from PyPI
 
 You can install [`pandamonium` from PyPI][pandamonium_PyPI] into any Python
-virtual environment by running
+environment by running
 
 ```
 python -m pip install pandamonium
