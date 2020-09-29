@@ -1,12 +1,6 @@
 Pandamonium
 ===========
 
-[![GitHub Project](https://img.shields.io/badge/GitHub--blue?style=social&logo=GitHub)](https://github.com/dguest/pandamonium)
-[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.4019463.svg)](https://doi.org/10.5281/zenodo.4019463)
-
-[![PyPI version](https://badge.fury.io/py/pandamonium.svg)](https://badge.fury.io/py/pandamonium)
-[![Supported Python versions](https://img.shields.io/pypi/pyversions/pandamonium.svg)](https://pypi.org/project/pandamonium/)
-
 Cause panda and rucio don't work too good
 
 This tells you if your jobs are done. And stuff like that.
@@ -16,7 +10,17 @@ This tells you if your jobs are done. And stuff like that.
  - Gets input / output dataset names
  - Works with piping, other unix nice things
 
-## Installation
+Like badges? We have the best badges:
+
+[![GitHub Project](https://img.shields.io/badge/GitHub--blue?style=social&logo=GitHub)](https://github.com/dguest/pandamonium)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.4019463.svg)](https://doi.org/10.5281/zenodo.4019463)
+
+[![PyPI version](https://badge.fury.io/py/pandamonium.svg)](https://badge.fury.io/py/pandamonium)
+[![Supported Python versions](https://img.shields.io/pypi/pyversions/pandamonium.svg)](https://pypi.org/project/pandamonium/)
+
+
+Installation
+------------
 
 ### Install from PyPI
 
@@ -27,16 +31,18 @@ virtual environment by running
 python -m pip install pandamonium
 ```
 
-### Install the old style of global scripts
+### Install oldschool way
 
-If you want to install the original version of `pandamonium` before it became a
-library and was a set of global level Python scripts you can still do that.
+If you can't get `pip` working you can just put the scripts you need
+in your path. Note that this is **deprecated** (but still works for
+now).
 
-1. Clone the repository at tag [`v0.1`][tag_v0.1]
+1. Clone the repository
 ```
-git clone git@github.com:dguest/pandamonium.git --branch v0.1
+git clone git@github.com:dguest/pandamonium.git
 ```
 2. Add the directory to your `PATH`.
+
 Maybe with something like the following in your `.bashrc`
 
 ```
@@ -48,9 +54,10 @@ fi
 ```
 
 [pandamonium_PyPI]: https://pypi.org/project/pandamonium/
-[tag_v0.1]: https://github.com/dguest/pandamonium/releases/tag/v0.1
 
-## Use
+
+Use
+---
 
 1. Run `pandamon`
 ```
@@ -66,16 +73,9 @@ Without any arguments the task name defaults to `user.$RUCIO_ACCOUNT*`.
 
 Also try `pandamon -h`.
 
-### Deprecation Warning
 
-You can currently just clone the repository and have `master` work the same way
-as [`v0.1`][tag_v0.1] on LXPLUS or ATLAS Connect, but this will be deprecated in
-the future in favor of installing `pandamonium` as a Python library.
-The motivation for this is that `pandamonium` does have hard requirements on
-other libraries, and it is better to fully contain them through the installation
-of the library through PyPI.
-
-## Other tricks
+Other tricks
+------------
 
 #### Get input/output dataset names ####
 
@@ -130,7 +130,22 @@ See [this JIRA ticket][1] where they plan to make it faster.
 
 [1]: https://its.cern.ch/jira/browse/ATLASPANDA-492
 
-## Additional Technical Information
+
+Additional Technical Information
+--------------------------------
+
+### Deprecation Warning
+
+You can currently just clone the repository and have `master` work the
+same way as [`v0.1`][tag_v0.1] on LXPLUS or ATLAS Connect, but this
+will be deprecated in the future in favor of installing `pandamonium`
+as a Python library.  The motivation for this is that `pandamonium`
+does have hard requirements on other libraries, and it is better to
+fully contain them through the installation of the library through
+PyPI.
+
+[tag_v0.1]: https://github.com/dguest/pandamonium/releases/tag/v0.1
+
 
 ### Install development release from TestPyPI
 
@@ -185,7 +200,9 @@ You will now be dropped into a virtual environment named `base` each time you lo
 The virtual environment is not special in anyway, so you should treat it as you
 would any other.
 
-## Testimonials
+
+Testimonials
+------------
 
 "I like colors" -- Chase Schimmin
 
