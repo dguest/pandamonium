@@ -139,10 +139,18 @@ Additional Technical Information
 You can currently just clone the repository and have `master` work the
 same way as [`v0.1`][tag_v0.1] on LXPLUS or ATLAS Connect, but this
 will be deprecated in the future in favor of installing `pandamonium`
-as a Python library.  The motivation for this is that `pandamonium`
+as a Python library.
+
+The motivation for this is that `pandamonium`
 does have hard requirements on other libraries, and it is better to
 fully contain them through the installation of the library through
 PyPI.
+
+If you really need the old behaviour forever, you can always use
+
+```
+git clone git@github.com:dguest/pandamonium.git --branch v0.1
+```
 
 [tag_v0.1]: https://github.com/dguest/pandamonium/releases/tag/v0.1
 
