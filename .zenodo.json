@@ -1,0 +1,28 @@
+{
+    "description": "Command line library to parse the Panda web API",
+    "license": "BSD-3-Clause",
+    "title": "dguest/pandamonium: v0.1.0",
+    "version": "v0.1.0",
+    "upload_type": "software",
+    "creators": [
+        {
+            "affiliation": "University of California Irvine",
+            "name": "Daniel Guest",
+            "orcid": "0000-0002-4305-2295"
+        }
+    ],
+    "access_right": "open",
+    "keywords": [
+      "hep",
+      "utilities",
+      "physics",
+      "panda"
+    ],
+    "related_identifiers": [
+        {
+            "scheme": "url",
+            "identifier": "https://github.com/dguest/pandamonium/tree/v0.1.0",
+            "relation": "isSupplementTo"
+        }
+    ]
+}
