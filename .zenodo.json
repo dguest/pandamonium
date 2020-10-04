@@ -1,0 +1,33 @@
+{
+    "description": "Command line library to parse the Panda web API",
+    "license": "BSD-3-Clause",
+    "title": "dguest/pandamonium: v0.1.0",
+    "version": "v0.1.0",
+    "upload_type": "software",
+    "creators": [
+        {
+            "affiliation": "Humboldt-Universität zu Berlin",
+            "name": "Daniel Guest",
+            "orcid": "0000-0002-4305-2295"
+        },
+        {
+            "affiliation": "University of Illinois at Urbana-Champaign",
+            "name": "Matthew Feickert",
+            "orcid": "0000-0003-4124-7862"
+        }
+    ],
+    "access_right": "open",
+    "keywords": [
+      "hep",
+      "utilities",
+      "physics",
+      "panda"
+    ],
+    "related_identifiers": [
+        {
+            "scheme": "url",
+            "identifier": "https://github.com/dguest/pandamonium/tree/v0.1.0",
+            "relation": "isSupplementTo"
+        }
+    ]
+}
