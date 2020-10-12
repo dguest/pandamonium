@@ -72,7 +72,7 @@ jobs:
       with:
         password: ${{ secrets.test_pypi_password }}
         repository_url: https://test.pypi.org/legacy/
-   - name: Publish distribution 📦 to PyPI
+    - name: Publish distribution 📦 to PyPI
       if: github.event_name == 'release' && github.event.action == 'published' && github.repository == 'dguest/pandamonium'
       uses: pypa/gh-action-pypi-publish@v1.3.1
       with:
