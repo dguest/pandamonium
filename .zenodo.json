@@ -1,8 +1,8 @@
 {
     "description": "Command line library to parse the Panda web API",
     "license": "BSD-3-Clause",
-    "title": "dguest/pandamonium: v0.1.0",
-    "version": "v0.1.0",
+    "title": "dguest/pandamonium: v0.2.0",
+    "version": "v0.2.0",
     "upload_type": "software",
     "creators": [
         {
@@ -26,7 +26,7 @@
     "related_identifiers": [
         {
             "scheme": "url",
-            "identifier": "https://github.com/dguest/pandamonium/tree/v0.1.0",
+            "identifier": "https://github.com/dguest/pandamonium/tree/v0.2.0",
             "relation": "isSupplementTo"
         }
     ]
