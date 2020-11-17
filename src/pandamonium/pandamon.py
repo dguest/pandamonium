@@ -74,6 +74,11 @@ def get_args():
         description=__doc__,
         formatter_class=argparse.RawDescriptionHelpFormatter,
     )
+    parser.add_argument(
+        'taskname',
+        help=_h_taskname,
+        nargs='?',
+    )
     userenv = (
         os.environ['RUCIO_ACCOUNT']
         if 'RUCIO_ACCOUNT' in os.environ
@@ -81,14 +86,6 @@ def get_args():
     )
     parser.add_argument(
         '-u', '--user', help='User CERN alias', default=userenv
-    )
-    namespace, _ = parser.parse_known_args()
-    parser.add_argument(
-        '-n',
-        '--taskname',
-        help=_h_taskname,
-        nargs='?',
-        default="user.{}".format(namespace.user),
     )
     parser.add_argument('--username', help=_h_username + de, default=username)
     parser.add_argument('-d', '--days', help=_h_days, type=int)
@@ -135,6 +132,9 @@ def get_args():
     )
 
     args = parser.parse_args()
+    if not args.taskname:
+        args.taskname = "user.{}".format(args.user)
+    # FIXME: Check if this can ever happen
     if not args.taskname and sys.stdin.isatty():
         parser.print_usage()
         sys.exit('ERROR: need to pipe datasets or specify a search string')
