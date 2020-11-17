@@ -76,7 +76,8 @@ def get_args():
     )
     userenv = 'RUCIO_ACCOUNT' if 'RUCIO_ACCOUNT' in os.environ else 'USER'
     parser.add_argument(
-        'taskname',
+        '-n',
+        '--taskname',
         help=_h_taskname,
         nargs='?',
         default="user.{}".format(os.environ[userenv]),
