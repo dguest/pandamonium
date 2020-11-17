@@ -74,13 +74,21 @@ def get_args():
         description=__doc__,
         formatter_class=argparse.RawDescriptionHelpFormatter,
     )
-    userenv = 'RUCIO_ACCOUNT' if 'RUCIO_ACCOUNT' in os.environ else 'USER'
+    userenv = (
+        os.environ['RUCIO_ACCOUNT']
+        if 'RUCIO_ACCOUNT' in os.environ
+        else os.environ['USER']
+    )
+    parser.add_argument(
+        '-u', '--user', help='User CERN alias', default=userenv
+    )
+    namespace, _ = parser.parse_known_args()
     parser.add_argument(
         '-n',
         '--taskname',
         help=_h_taskname,
         nargs='?',
-        default="user.{}".format(os.environ[userenv]),
+        default="user.{}".format(namespace.user),
     )
     parser.add_argument('--username', help=_h_username + de, default=username)
     parser.add_argument('-d', '--days', help=_h_days, type=int)
