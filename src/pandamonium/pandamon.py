@@ -134,11 +134,7 @@ def get_args():
     args = parser.parse_args()
     if not args.taskname:
         args.taskname = "user.{}".format(args.user)
-    # FIXME: Check if this can ever happen
     # FIXME: Test that taskname can be piped in Unix style
-    if not args.taskname and sys.stdin.isatty():
-        parser.print_usage()
-        sys.exit('ERROR: need to pipe datasets or specify a search string')
     return args
 
 
