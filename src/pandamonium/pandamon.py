@@ -7,7 +7,7 @@ With a specified search string, will search for datasets with that
 name. If the name doesn't end in `*` or `/`, append a wildcard.
 if the string is '-', the datasets are read from stdin.
 
-The user name can be specified via environment variable to reduce
+The username can be specified via environment variable to reduce
 clutter.
 """
 
@@ -31,7 +31,7 @@ except:
 
 # help strings
 _h_taskname = 'initial search string'
-_h_user = 'full user name, or blank for all'
+_h_username = 'full ATLAS PanDA username, or blank for all'
 _h_stream = 'stream name fragment to filter for'
 _h_site = 'list grid site(s) where job ran'
 _h_days = 'only look back this many days'
@@ -53,7 +53,7 @@ _h_more_info_string = (
     'The Danny Antrim option: print even more information about your jobs!'
 )
 # defaults
-_def_user = 'GRID_USER_NAME'
+_def_username = 'GRID_USER_NAME'
 _def_stream = 'OUT'
 
 _headers = {'Accept': 'application/json', 'Content-Type': 'application/json'}
@@ -61,11 +61,11 @@ _headers = {'Accept': 'application/json', 'Content-Type': 'application/json'}
 
 def get_args():
     c = ' (default: %(const)s)'
-    user = os.environ.get(_def_user, '')
-    if not user:
-        de = ' (please set {} environment variable)'.format(_def_user)
+    username = os.environ.get(_def_username, '')
+    if not username:
+        de = ' (please set {} environment variable)'.format(_def_username)
     else:
-        de = ' (set via {} variable to "%(default)s")'.format(_def_user)
+        de = ' (set via {} variable to "%(default)s")'.format(_def_username)
     de += (
         ' Note that this should be your full name,'
         ' i.e. "Daniel Joseph Antrim"'
@@ -82,7 +82,7 @@ def get_args():
         nargs='?',
         default="user.{}".format(os.environ[userenv]),
     )
-    parser.add_argument('-u', '--user', help=_h_user + de, default=user)
+    parser.add_argument('--username', help=_h_username + de, default=username)
     parser.add_argument('-d', '--days', help=_h_days, type=int)
     addinfo = parser.add_mutually_exclusive_group()
     addinfo.add_argument(
@@ -134,13 +134,13 @@ def get_args():
 
 
 def get_request(
-    taskname, user, days=None, json=True, force=False, metadata=False
+    taskname, username, days=None, json=True, force=False, metadata=False
 ):
     pars = {'taskname': taskname, 'datasets': True, 'limit': 10000}
     if metadata:
         pars['extra'] = 'metastruct'
-    if user:
-        pars['username'] = user
+    if username:
+        pars['username'] = username
     if json:
         pars['json'] = 1
     if force:
@@ -282,7 +282,7 @@ def stdin_iter(args):
         task = line.strip()
         if task[-1] not in '/*':
             task = task + '*'
-        req = get_request(task, args.user, args.days, args.metadata)
+        req = get_request(task, args.username, args.days, args.metadata)
         for ds in json.loads(urlopen(req).read().decode('utf-8')):
             yield ds
 
@@ -298,7 +298,12 @@ def main():
             taskname = taskname + '*'
         use_json = not args.print_browser_string
         req = get_request(
-            taskname, args.user, args.days, use_json, args.force, args.metadata
+            taskname,
+            args.username,
+            args.days,
+            use_json,
+            args.force,
+            args.metadata,
         )
         if args.print_browser_string:
             sys.stdout.write(req.get_full_url() + '\n')
