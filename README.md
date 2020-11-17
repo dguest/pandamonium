@@ -63,7 +63,7 @@ Use
 
 1. Run `pandamon`
 ```
-pandamon [user.<your user name>]
+pandamon [--user <your user alias>]
 ```
 2. See the output of your current GRID jobs with **pretty colors!**
 
@@ -89,9 +89,9 @@ Other tricks
 #### Filter by user name ####
 
 This is useful if you're running with group privileges. Set the
-environment variable `GRID_USER_NAME` to your full user name (the one
+environment variable `GRID_USER_NAME` to your full username (the one
 that shows up on the top of the bigpanda page). Or specify one with
-`--user`.
+`--username`.
 
 #### Find input datasets for jobs in the `broken` state ####
 
