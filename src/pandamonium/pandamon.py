@@ -31,7 +31,7 @@ except:
 
 # help strings
 _h_taskname = 'initial search string'
-_h_username = 'full ATLAS PanDA username, or blank for all'
+_h_username = 'Filter on full ATLAS PanDA username, or blank for all'
 _h_stream = 'stream name fragment to filter for'
 _h_site = 'list grid site(s) where job ran'
 _h_days = 'only look back this many days'
