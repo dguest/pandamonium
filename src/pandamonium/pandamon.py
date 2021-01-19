@@ -315,14 +315,18 @@ def main():
     if args.rnge:
         r = args.rnge.split('-')
         if args.rnge[0] == '-':
-            datasets = [ds for ds in datasets if int(ds['reqid']) <= int(r[1])]
+            datasets = [
+                ds for ds in datasets if int(ds['jeditaskid']) <= int(r[1])
+            ]
         elif args.rnge[-1] == '-':
-            datasets = [ds for ds in datasets if int(ds['reqid']) >= int(r[0])]
+            datasets = [
+                ds for ds in datasets if int(ds['jeditaskid']) >= int(r[0])
+            ]
         else:
             datasets = [
                 ds
                 for ds in datasets
-                if int(ds['reqid']) in range(int(r[0]), int(r[1]))
+                if int(ds['jeditaskid']) in range(int(r[0]), int(r[1]))
             ]
 
     if args.metadata and datasets and 'jobs_metadata' not in datasets[0]:
