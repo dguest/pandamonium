@@ -18,7 +18,7 @@ _h_stream = 'stream name fragment to filter for'
 _h_site = 'list grid site(s) where job ran'
 _h_days = 'only look back this many days'
 _h_clean = 'clean output: better for cut or grep'
-_h_taskid = 'output only taskid. useful for piping.'
+_h_taskid = 'output only JEDI taskid. Useful for piping. See the PanDA JEDI docs for more information.'
 _h_print_browser_string = (
     'don\'t run query, just print string to copy into browser'
 )
