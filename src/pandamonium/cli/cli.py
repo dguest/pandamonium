@@ -1,5 +1,5 @@
-import logging
 import argparse
+import logging
 
 from ..version import __version__
 

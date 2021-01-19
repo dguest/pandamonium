@@ -10,8 +10,8 @@ _h_jobid = 'panda taskid, you can also pipe them'
 
 epi = 'Thanks ATLAS. Thatlas.'
 
-import sys
 import argparse
+import sys
 
 try:
     from pandatools import PBookCore

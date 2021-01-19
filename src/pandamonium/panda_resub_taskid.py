@@ -11,8 +11,8 @@ _h_kill = 'kill any running jobs before retrying them'
 
 epi = 'Thanks ATLAS. Thatlas.'
 
-import sys
 import argparse
+import sys
 
 try:
     from pandatools import PBookCore

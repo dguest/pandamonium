@@ -12,9 +12,9 @@ _help_remove = "remove fields that we usually don't care about"
 _help_prefix = "prefix file names with this"
 
 import argparse
+import os
 import re
 import sys
-import os
 
 
 def get_args():
