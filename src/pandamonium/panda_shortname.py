@@ -8,13 +8,13 @@ remove any fields. Except the "scope", which seems totally
 worthless...
 """
 
-_help_remove = "remove fields that we usually don't care about"
-_help_prefix = "prefix file names with this"
-
 import argparse
 import os
 import re
 import sys
+
+_help_remove = "remove fields that we usually don't care about"
+_help_prefix = "prefix file names with this"
 
 
 def get_args():

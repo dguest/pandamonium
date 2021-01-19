@@ -6,10 +6,6 @@ Kill jobs with pbook
 Runs on pure python beauty.
 """
 
-_h_jobid = 'panda taskid, you can also pipe them'
-
-epi = 'Thanks ATLAS. Thatlas.'
-
 import argparse
 import sys
 
@@ -18,6 +14,10 @@ try:
 except ImportError:
     print("Failed to load PandaClient, please set up locally")
     sys.exit(1)
+
+_h_jobid = 'panda taskid, you can also pipe them'
+
+epi = 'Thanks ATLAS. Thatlas.'
 
 
 def get_args():
