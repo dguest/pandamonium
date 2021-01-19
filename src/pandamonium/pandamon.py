@@ -40,19 +40,20 @@ _def_stream = 'OUT'
 
 # Attempt to default to Python 3
 try:
-    from urllib.request import urlopen
-    from urllib.request import Request
     from urllib.parse import urlencode
+    from urllib.request import Request
+    from urllib.request import urlopen
 except:
     from urllib2 import urlopen
     from urllib2 import Request
     from urllib import urlencode
 
-import json
-import sys, os
-import re
 import argparse
 import datetime
+import json
+import os
+import re
+import sys
 
 _headers = {'Accept': 'application/json', 'Content-Type': 'application/json'}
 
