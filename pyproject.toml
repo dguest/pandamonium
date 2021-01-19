@@ -26,3 +26,6 @@ ignore = [
     'panda-resub-taskid',
     'panda-shortname'
 ]
+
+[tool.isort]
+force_single_line = true
