@@ -234,6 +234,7 @@ def getstatus(task, args):
                 s=status_color,
                 t=task['taskname'],
                 j=task['jeditaskid'],
+                i=task['reqid'],
                 l=(11 + nonprlen),
                 p=task['dsinfo']["pctfinished"] / 100.0,
                 f=task['dsinfo']["pctfailed"] / 100.0,
