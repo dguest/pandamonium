@@ -28,4 +28,6 @@ ignore = [
 ]
 
 [tool.isort]
+profile = "black"
+multi_line_output = 3
 force_single_line = true
