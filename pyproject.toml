@@ -31,3 +31,6 @@ ignore = [
 profile = "black"
 multi_line_output = 3
 force_single_line = true
+ignore_comments = true
+float_to_top = true
+skip = ["src/pandamonium/version.py"]
