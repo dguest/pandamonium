@@ -18,7 +18,7 @@ _h_stream = 'stream name fragment to filter for'
 _h_site = 'list grid site(s) where job ran'
 _h_days = 'only look back this many days'
 _h_clean = 'clean output: better for cut or grep'
-_h_taskid = 'output only taskid. useful for piping.'
+_h_taskid = 'output only JEDI taskid. Useful for piping. See the PanDA JEDI docs for more information on JEDITASKID.'
 _h_print_browser_string = (
     'don\'t run query, just print string to copy into browser'
 )
@@ -243,12 +243,12 @@ def getstatus(task, args):
             outputString = fmt_string.format(
                 s=status_color,
                 t=task['taskname'],
-                i=task['reqid'],
+                i=task['jeditaskid'],
                 l=(11 + nonprlen),
                 p=task['dsinfo']["pctfinished"] / 100.0,
             )
     if args.taskid:
-        outputString = fmt_string.format(i=task['reqid'])
+        outputString = fmt_string.format(i=task['jeditaskid'])
 
     return outputString
 
@@ -315,14 +315,18 @@ def main():
     if args.rnge:
         r = args.rnge.split('-')
         if args.rnge[0] == '-':
-            datasets = [ds for ds in datasets if int(ds['reqid']) <= int(r[1])]
+            datasets = [
+                ds for ds in datasets if int(ds['jeditaskid']) <= int(r[1])
+            ]
         elif args.rnge[-1] == '-':
-            datasets = [ds for ds in datasets if int(ds['reqid']) >= int(r[0])]
+            datasets = [
+                ds for ds in datasets if int(ds['jeditaskid']) >= int(r[0])
+            ]
         else:
             datasets = [
                 ds
                 for ds in datasets
-                if int(ds['reqid']) in range(int(r[0]), int(r[1]))
+                if int(ds['jeditaskid']) in range(int(r[0]), int(r[1]))
             ]
 
     if args.metadata and datasets and 'jobs_metadata' not in datasets[0]:
