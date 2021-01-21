@@ -11,6 +11,24 @@ The user name can be specified via environment variable to reduce
 clutter.
 """
 
+import argparse
+import datetime
+import json
+import os
+import re
+import sys
+
+# Attempt to default to Python 3
+try:
+    from urllib.parse import urlencode
+    from urllib.request import Request
+    from urllib.request import urlopen
+except:
+    from urllib import urlencode
+
+    from urllib2 import Request
+    from urllib2 import urlopen
+
 # help strings
 _h_taskname = 'initial search string'
 _h_user = 'full user name, or blank for all'
@@ -37,22 +55,6 @@ _h_more_info_string = (
 # defaults
 _def_user = 'GRID_USER_NAME'
 _def_stream = 'OUT'
-
-# Attempt to default to Python 3
-try:
-    from urllib.request import urlopen
-    from urllib.request import Request
-    from urllib.parse import urlencode
-except:
-    from urllib2 import urlopen
-    from urllib2 import Request
-    from urllib import urlencode
-
-import json
-import sys, os
-import re
-import argparse
-import datetime
 
 _headers = {'Accept': 'application/json', 'Content-Type': 'application/json'}
 
