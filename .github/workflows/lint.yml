@@ -27,3 +27,6 @@ jobs:
     - name: Lint with Black
       run: |
         black --check --diff --verbose .
+    - name: Lint with isort
+      run: |
+        isort --check --diff --verbose .

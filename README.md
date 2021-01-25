@@ -18,6 +18,8 @@ Like badges? We have the best badges:
 [![PyPI version](https://badge.fury.io/py/pandamonium.svg)](https://badge.fury.io/py/pandamonium)
 [![Supported Python versions](https://img.shields.io/pypi/pyversions/pandamonium.svg)](https://pypi.org/project/pandamonium/)
 
+[![pre-commit.ci status](https://results.pre-commit.ci/badge/github/dguest/pandamonium/master.svg)](https://results.pre-commit.ci/latest/github/dguest/pandamonium/master)
+
 
 Installation
 ------------
