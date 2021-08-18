@@ -10,10 +10,13 @@ import argparse
 import sys
 
 try:
-    from pandatools import PBookCore
+    from pandaclient import PBookCore
 except ImportError:
-    print("Failed to load PandaClient, please set up locally")
-    sys.exit(1)
+    try:
+        from pandatools import PBookCore
+    except ImportError:
+        print("Failed to load PandaClient, please set up locally")
+        sys.exit(1)
 
 _h_jobid = 'panda taskid, you can also pipe them'
 
