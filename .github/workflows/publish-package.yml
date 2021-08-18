@@ -35,7 +35,7 @@ jobs:
 
     - name: Build a wheel and a sdist
       run: |
-        python -m build --sdist --wheel --outdir dist/ .
+        python -m build --outdir dist/ .
 
     - name: Verify history available for dev versions
       run: |
