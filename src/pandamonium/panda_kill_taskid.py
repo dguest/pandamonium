@@ -10,7 +10,7 @@ import argparse
 import sys
 
 try:
-    from pandatools import PBookCore
+    from pandaclient import PBookCore
 except ImportError:
     print("Failed to load PandaClient, please set up locally")
     sys.exit(1)
