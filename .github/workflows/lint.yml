@@ -12,21 +12,26 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
+
     - name: Set up Python 3.9
       uses: actions/setup-python@v2
       with:
         python-version: 3.9
+
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip setuptools wheel
         python -m pip install --upgrade --quiet --no-cache-dir --editable .[lint]
         python -m pip list
+
     - name: Lint with Pyflakes
       run: |
         python -m pyflakes .
+
     - name: Lint with Black
       run: |
         black --check --diff --verbose .
+
     - name: Lint with isort
       run: |
         isort --check --diff --verbose .
