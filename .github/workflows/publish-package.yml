@@ -15,14 +15,14 @@ jobs:
     name: Build and publish Python distro to (Test)PyPI
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
       with:
         fetch-depth: 0
 
-    - name: Set up Python 3.9
-      uses: actions/setup-python@v2
+    - name: Set up Python
+      uses: actions/setup-python@v3
       with:
-        python-version: 3.9
+        python-version: "3.10"
 
     - name: Install python-build, check-manifest, and twine
       run: |
@@ -35,7 +35,7 @@ jobs:
 
     - name: Build a wheel and a sdist
       run: |
-        python -m build --outdir dist/ .
+        python -m build .
 
     - name: Verify history available for dev versions
       run: |
@@ -52,18 +52,23 @@ jobs:
       run: twine check dist/*
 
     - name: List contents of sdist
-      run: tar --list --file dist/pandamonium-*.tar.gz
+      run: python -m tarfile --list dist/pandamonium-*.tar.gz
+
+    - name: List contents of wheel
+      run: python -m zipfile --list dist/pandamonium-*.whl
 
     - name: Publish distribution 📦 to Test PyPI
       # every PR will trigger a push event on master, so check the push event is actually coming from master
       if: github.event_name == 'push' && github.ref == 'refs/heads/master' && github.repository == 'dguest/pandamonium'
-      uses: pypa/gh-action-pypi-publish@v1.4.2
+      uses: pypa/gh-action-pypi-publish@v1.5.0
       with:
         password: ${{ secrets.test_pypi_password }}
         repository_url: https://test.pypi.org/legacy/
+        print_hash: true
 
     - name: Publish distribution 📦 to PyPI
       if: github.event_name == 'release' && github.event.action == 'published' && github.repository == 'dguest/pandamonium'
-      uses: pypa/gh-action-pypi-publish@v1.4.2
+      uses: pypa/gh-action-pypi-publish@v1.5.0
       with:
         password: ${{ secrets.pypi_password }}
+        print_hash: true
