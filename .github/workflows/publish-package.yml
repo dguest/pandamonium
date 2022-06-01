@@ -52,7 +52,10 @@ jobs:
       run: twine check dist/*
 
     - name: List contents of sdist
-      run: tar --list --file dist/pandamonium-*.tar.gz
+      run: python -m tarfile --list dist/pandamonium-*.tar.gz
+
+    - name: List contents of wheel
+      run: python -m zipfile --list dist/pandamonium-*.whl
 
     - name: Publish distribution 📦 to Test PyPI
       # every PR will trigger a push event on master, so check the push event is actually coming from master
