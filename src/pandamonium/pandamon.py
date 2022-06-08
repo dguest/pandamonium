@@ -268,10 +268,10 @@ def format_meta(task, days, force):
         except KeyError:
             meat = j
         for k, v in meat.items():
-            if k != sum_data:
+            if k not in sum_data:
                 sum_data[k] = v
             else:
-                sum_data += v
+                sum_data[k] += v
     string = ', '.join(['{}:{}'.format(k, v) for k, v in sum_data.items()])
     return '{t}  {f}'.format(t=task['taskname'], f=string)
 
