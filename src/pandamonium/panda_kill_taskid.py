@@ -40,6 +40,7 @@ def get_args():
 def kill(jobs, args):
     # enforceEnter, verbose, restoreDB
     pbook = PBookCore.PBookCore()
+    pbook.init()
 
     for job in jobs:
         pbook.kill(job)
