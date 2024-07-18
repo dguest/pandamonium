@@ -46,6 +46,7 @@ def get_args():
 def retry(jobs, args):
     # enforceEnter, verbose, restoreDB
     pbook = PBookCore.PBookCore()
+    pbook.init()
     retry_opts = {}
     if args.build:
         retry_opts['retryBuild'] = True
